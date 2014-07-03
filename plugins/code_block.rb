@@ -63,10 +63,10 @@ module Jekyll
       end
       if markup =~ CaptionUrlTitle
         @file = $1
-        @caption = "<figcaption><span>#{$1}</span><a href='#{$2 + $3}'>#{$4}</a></figcaption>"
+        @caption = "<figcaption class='panel-heading'><h3 class='panel-title'>#{$1}</h3><a href='#{$2}'>#{$3 || 'link'}</a></figcaption>"
       elsif markup =~ CaptionUrl
         @file = $1
-        @caption = "<figcaption><span>#{$1}</span><a href='#{$2 + $3}'>link</a></figcaption>"
+        @caption = "<figcaption class='panel-heading'><h3 class='panel-title'>#{$1}</h3></figcaption>\n"
       elsif markup =~ Caption
         @file = $1
         @caption = "<figcaption><span>#{$1}</span></figcaption>\n"
@@ -80,7 +80,7 @@ module Jekyll
     def render(context)
       output = super
       code = super.join
-      source = "<figure class='code'>"
+      source = "<figure class='code panel panel-default'>"
       source += @caption if @caption
       if @filetype
         source += " #{highlight(code, @filetype)}</figure>"

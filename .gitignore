@@ -5,7 +5,6 @@
 .pygments-cache
 _deploy
 public
-sass/
 sass.old
 source.old
 source/_stash

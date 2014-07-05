@@ -80,7 +80,7 @@ module HighlightCode
     if marks.size
       code.lines.each_with_index do |line,index|
         classes = 'line'
-        if marks.include? index
+        if marks.include? index + start
           classes += ' marked'
           classes += ' start' unless marks.include? index - 1 + start
           classes += ' end' unless marks.include? index + 1 + start

@@ -1,6 +1,7 @@
 ---
 layout: page
-title: "Thorium Github"
+navbar: Github
+title: "Thorium Group's Github"
 date: 2014-07-05 20:25
 comments: true
 sharing: true
@@ -39,9 +40,6 @@ header.page-header {
                     <a href="https://github.com/{{ site.github_user }}/repositories"><span id="num-repos">&nbsp;</span> public repos</a>
                     <br>
                 </p>
-                {{ if site.email }}
-                    <p class="email"><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
-                {{ endif }}
             </div>
         </div>
     </div>

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: luts | Thorium for Nuke]]></title>
+  <link href="http://ThoriumGroup.github.com//blog/categories/luts/atom.xml" rel="self"/>
+  <link href="http://ThoriumGroup.github.com//"/>
+  <updated>2014-07-05T00:31:15-07:00</updated>
+  <id>http://ThoriumGroup.github.com//</id>
+  <author>
+    <name><![CDATA[Sean Wallitsch & Thorium Group]]></name>
+    <email><![CDATA[shidarin@alphamatte.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Controlling Nuke LUT behavior]]></title>
+    <link href="http://ThoriumGroup.github.com//blog/2013/controlling-nuke-lut-behavior/"/>
+    <updated>2013-12-22T14:33:00-08:00</updated>
+    <id>http://ThoriumGroup.github.com//blog/2013/controlling-nuke-lut-behavior</id>
+    <content type="html"><![CDATA[<p>The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can use some work. By default, the 1D LUTs affect every channel (even alphas). For 3D LUTs it depends on the node used, but problems can vary from only affecting the default <code>rgb</code> to touching every layer- even data layers.</p>
+
+<!-- more -->
+
+
+<p>For those not totally familiar with the concept of LUTs, a good overview is <a href="http://www.lightillusion.com/luts.html">here</a>, while the wikipedia page for <a href="http://en.wikipedia.org/wiki/3D_lookup_table">3D LUTs</a> is actually pretty decent.</p>
+
+<p>All code presented here is covered under a standard <a href="/licensing">MIT license</a>, and owned by Rhythm &amp; Hues (posted with permission). A <a href="http://gist.github.com/shidarin/9925799">gist</a> of this code is also published.</p>
+
+<h2>1D LUTs</h2>
+
+<p>The workflow the foundry advises for a 1D LUT is as follows:</p>
+
+<blockquote><p>To register one of the LUTs in the Project Settings as a Viewer Process, use, for example, the following function in your init.py:</p></blockquote>
+
+<p>``` python Nuke Online Help 8v1 or User Guide 7v8 (page 611) http://help.thefoundry.co.uk/nuke/8.0/#user_guide/configuring_nuke/using_gizmo_viewer_process.html mark:5
+nuke.ViewerProcess.register(</p>
+
+<pre><code>"Cineon",
+nuke.createNode,
+(
+    "ViewerProcess_1DLUT",
+    "current Cineon"
+)
+</code></pre>
+
+<p>)
+```</p>
+
+<blockquote><p>This registers a built-in gizmo called <code>ViewerProcess_1DLUT</code> as a Viewer Process and sets it to use the Cineon LUT. The registered Viewer Process appears in the Viewer Process dropdown menu as Cineon.</p></blockquote>
+
+<h4>Protecting The Alpha Channel</h4>
+
+<p>The built-in gizmo unfortunately lacks the one option we need, limiting the application of the LUT to <code>rgb</code> channels only. However, the gizmo only includes a single node, <code>ViewerLUT</code>, that does include that option. Let's create a basic group that includes the <code>ViewerLUT</code> node, but gives us more freedom.</p>
+
+<p>``` python mark:10
+def lutGroup1D(lutName):</p>
+
+<pre><code>"""Builds a proper 1D viewer lut that only affects the rgb channels"""
+# Start our group
+group = nuke.nodes.Group()
+group.begin()
+
+inputNode = nuke.nodes.Input()  # Group input
+
+conversion = nuke.createNode('ViewerLUT')
+conversion['rgb_only'].setValue(True)
+conversion['current'].setValue(lutName)
+conversion.setInput(0, inputNode)
+
+nuke.nodes.Output(
+    inputs=[conversion],
+)
+
+group.end()
+
+return group
+</code></pre>
+
+<p>```</p>
+
+<p>The key is line 10, we need to toggle the <code>rgb_only</code> bool checkbox on the <code>ViewerLUT</code> node so that it doesn't affect the alpha channels anymore.</p>
+
+<p>Despite recommending the usage of the <code>ViewerProcess_1DLUT</code>, the Foundry does point out that parameter of the <code>ViewerLUT</code> on the very next page.</p>
+
+<p>Now our 1D LUT is no longer affecting alpha channels, but unfortunately several layers representing data channels. Motion vectors, zdepth, etc, are still being hit with our LUT, as those channels are being shuffled into <code>rgb</code> for display purposes.</p>
+
+<h4>Protecting Data Channels</h4>
+
+<p>We need to add a <code>Remove</code> node to strip these layers before the <code>ViewerLUT</code> node, and then a <code>Copy</code> node afterwards to add them back in. If those layers aren't present in the incoming stream, Nuke doesn't complain.</p>
+
+<p>``` python start:8</p>
+
+<pre><code># Remove special layers if present
+
+REMOVE_KNOBS = {
+    'operation': 'remove',
+    'channels': 'depth',
+    'channels2': 'motion',
+    'channels3': 'forward',
+    'channels4': 'backward'
+}
+
+remove = nuke.nodes.Remove(
+    inputs=[inputNode],
+)
+for knob in REMOVE_KNOBS:
+    remove[knob].setValue(REMOVE_KNOBS[knob]) 
+</code></pre>
+
+<p>```</p>
+
+<p>When changing many knob values at once, it's often helpful to define a dictionary whose keys are the knob name, and values are the desired knob value. Then we can iterate through the dictionary, grabbing the knob object, and setting it to the retrieved value from the dictionary.</p>
+
+<p>Here's the copy node we need that adds the removed layers back in from the original input image stream:</p>
+
+<p>``` python start:28 mark:33-35</p>
+
+<pre><code># Add our special channels back in
+copy = nuke.nodes.Copy(
+    inputs=[inputNode, conversion],
+    channels='all'
+)
+# We need to eliminate any attempts at auto copy.
+for i in range(4):
+    copy['from' + str(i)].setValue('none')
+</code></pre>
+
+<p>```</p>
+
+<p>With the copy, we set it to <code>all</code> channels and remove the automatically filled in values in the <code>from0</code> and on knobs. We'll change the input to the <code>Output</code> node below to be linked to the <code>copy</code> node, and then we'll add an expanded docstring.</p>
+
+<h4>Final 1D LUT Function</h4>
+
+<p>``` python lutGroup1D (with changes marked) mark:3-15,23-36,40,43-50,53
+def lutGroup1D(lutName):</p>
+
+<pre><code>"""Builds a proper 1D viewer lut that only affects the rgb channels
+
+Args:
+    lutName : (str)
+        The 1d lut name. Must be already registered in Nuke's settings.
+
+Raises:
+    N/A
+
+Returns:
+    (&lt;nuke.node.Group&gt;)
+        A nuke group node that will handle the 1d LUT correctly.
+
+"""
+# Start our group
+group = nuke.nodes.Group()
+
+group.begin()
+
+inputNode = nuke.nodes.Input()  # Group input
+
+REMOVE_KNOBS = {
+    'operation': 'remove',
+    'channels': 'depth',
+    'channels2': 'motion',
+    'channels3': 'forward',
+    'channels4': 'backward'
+}
+
+# Remove special layers if present
+remove = nuke.nodes.Remove(
+    inputs=[inputNode],
+)
+for knob in REMOVE_KNOBS:
+    remove[knob].setValue(REMOVE_KNOBS[knob])
+
+conversion = nuke.createNode('ViewerLUT')
+conversion['rgb_only'].setValue(True)
+conversion['current'].setValue(lutName)
+conversion.setInput(0, remove)
+
+# Add our special channels back in
+copy = nuke.nodes.Copy(
+    inputs=[inputNode, conversion],
+    channels='all'
+)
+# We need to eliminate any attempts at auto copy.
+for i in range(4):
+    copy['from' + str(i)].setValue('none')
+
+nuke.nodes.Output(
+    inputs=[copy],
+)
+
+group.end()
+
+return group
+</code></pre>
+
+<p>```</p>
+
+<p>It's important to return the <code>group</code> object, because that returned object will be used as the Viewer Process itself!</p>
+
+<h4>Adding A LUT With lutGroup1D()</h4>
+
+<p>Now that we have our function, we can use it in place of the <code>ViewerProcess_1DLUT</code> node:</p>
+
+<p>``` python mark:3,5
+nuke.ViewerProcess.register(</p>
+
+<pre><code>"Cineon",
+lutGroup1D,
+(
+    "Cineon",
+)
+</code></pre>
+
+<p>)
+```</p>
+
+<h2>3D LUTs</h2>
+
+<p>We have 3 goals for 3D LUTs:</p>
+
+<ol>
+<li>Make sure every color layer is being affected by the LUT transform.</li>
+<li>Protect data layers from the transform.</li>
+<li>Ensure the transform happens in the correct colorspace.</li>
+</ol>
+
+
+<p>We don't need to worry about 3D LUTs affecting the alpha channel, because while a 1D LUT affects every channel the same, a 3D LUT has instructions for each color channel specifically- meaning it won't have any instructions for alpha channels and will leave them alone.</p>
+
+<p>Foundry gives some example nodes to use for 3D LUTs, such as the <code>Vectorfield</code> node, but doesn't mention the best node to use, the <a href="http://opencolorio.org/">OpenColorIO</a> node, <code>OCIOFileTransform</code>.</p>
+
+<h5>Why Use OpenColorIO?</h5>
+
+<p><a href="https://github.com/imageworks/OpenColorIO">OpenColorIO</a> is an open source project sponsored by Sony Imageworks. It has a lot of features, but right now we're primarily interested in it because it allows us to select which layers to apply the LUT to- including all of them.</p>
+
+<p>In comparison, the <code>Vectorfield</code> node only affects the default <code>rgb</code> layer, which is a pretty large handicap. The <code>Vectorfield</code> node does have an option for colorspace conversion of input images, which is a plus. We'll have to do our own colorspace conversion before applying the LUT with <code>OCIOFileTransform</code>, as almost all LUTs expect the inputted channels to be in a Log colorspace.</p>
+
+<h4>Building A Basic Viewer Process With OCIOFileTransform</h4>
+
+<p>We'll use the basic framework of our <code>lutGroup1D()</code> function to create a <code>lutGroup3D()</code>, including protection of data layers.</p>
+
+<p>``` python mark:1,24-29,33
+def lutGroup3D(lutFile):</p>
+
+<pre><code>"""Builds a proper 3D viewer lut that only affects the rgb channels"""
+# Start our group
+group = nuke.nodes.Group()
+group.begin()
+
+inputNode = nuke.nodes.Input()  # Group input
+
+REMOVE_KNOBS = {
+    'operation': 'remove',
+    'channels': 'depth',
+    'channels2': 'motion',
+    'channels3': 'forward',
+    'channels4': 'backward'
+}
+
+# Remove special layers if present
+remove = nuke.nodes.Remove(
+    inputs=[inputNode],
+)
+for knob in REMOVE_KNOBS:
+    remove[knob].setValue(REMOVE_KNOBS[knob])
+
+# Use our 3d LUT file
+mainLut = nuke.nodes.OCIOFileTransform(
+    inputs=[remove],
+    channels='all',
+    file=lutFile
+)
+
+# Add our special channels back in
+copy = nuke.nodes.Copy(
+    inputs=[inputNode, mainLut],
+    channels='all'
+)
+# We need to eliminate any attempts at auto copy.
+for i in range(4):
+    copy['from' + str(i)].setValue('none')
+
+nuke.nodes.Output(
+    inputs=[copy],
+)
+
+group.end()
+
+return group
+</code></pre>
+
+<p>```</p>
+
+<p>We've only had to change a few lines here. Instead of a string representing an already registered LUT name, the <code>OCIOFileTransform</code> requires a full filepath, which we need to provide in the <code>lutFile</code> arg.</p>
+
+<p>In addition, we've set <code>channels</code> to <code>all</code>, which (unlike the <code>Vectorfield</code> node) will ensure that every layer's <code>rgb</code> will get affected. We're already protecting the data channels by removing them, just like in <code>lutGroup1D()</code>.</p>
+
+<h4>Setting Input Colorspace</h4>
+
+<p>Most LUTs require an input colorspace that's different from Linear space that Nuke works in. <code>Vectorfield</code> has this conversion as a built in option, but <code>OCIOFileTransform</code> does not, so we'll have to add it before getting the correct result.</p>
+
+<p>Traditionally the expected input colorspace is Cineon Log, but on an Arri Alexa show it would be LogC. We'll specify which in an arg of the function, and use use a <code>ViewerLUT</code> node to convert from to that.</p>
+
+<p>Why use <code>ViewerLUT</code> as opposed to a <code>Colorspace</code>? Because <code>ViewerLUT</code> lets us specify any of the 1D LUTs currently within the Nuke script, not just the built in ones. This means your pipeline can specify a different version of Cineon Log or an older revision of Alexa LogC.</p>
+
+<p>We'll make this input colorspace optional, so if the 3D LUT is built for linear values you can omit the arg.</p>
+
+<h4>Final 3D LUT Function</h4>
+
+<p>``` python lutGroup3D (with changes marked) mark:1,4-17,39-46,50
+def lutGroup3D(lutFile, inputSpace=None):</p>
+
+<pre><code>"""Builds a proper 3D viewer lut that only affects the rgb channels
+
+Args:
+    lutFile : (str)
+        The filepath to a 3d lut
+    inputSpace=None : (str)
+        The colorspace the 3d lut file expects.
+
+Raises:
+    N/A
+
+Returns:
+    (&lt;nuke.node.Group&gt;)
+        A nuke node group that will handle the 3d LUT correctly.
+
+"""
+# Start our group
+group = nuke.nodes.Group()
+group.begin()
+
+inputNode = nuke.nodes.Input()  # Group input
+
+REMOVE_KNOBS = {
+    'operation': 'remove',
+    'channels': 'depth',
+    'channels2': 'motion',
+    'channels3': 'forward',
+    'channels4': 'backward'
+}
+
+# Remove special layers if present
+remove = nuke.nodes.Remove(
+    inputs=[inputNode],
+)
+for knob in REMOVE_KNOBS:
+    remove[knob].setValue(REMOVE_KNOBS[knob])
+
+if inputSpace:
+    # Convert to Cineon or LogC colorspace
+    conversion = nuke.createNode('ViewerLUT')
+    conversion['rgb_only'].setValue(True)
+    conversion['current'].setValue(inputSpace)
+    conversion.setInput(0, remove)
+else:
+    conversion = remove
+
+# Use our 3d LUT file
+mainLut = nuke.nodes.OCIOFileTransform(
+    inputs=[conversion],
+    channels='all',
+    file=lutFile
+)
+
+# Add our special channels back in
+copy = nuke.nodes.Copy(
+    inputs=[inputNode, mainLut],
+    channels='all'
+)
+# We need to eliminate any attempts at auto copy.
+for i in range(4):
+    copy['from' + str(i)].setValue('none')
+
+nuke.nodes.Output(
+    inputs=[copy],
+)
+
+group.end()
+
+return group
+</code></pre>
+
+<p>```</p>
+
+<h4>Adding A LUT With lutGroup3D()</h4>
+
+<p>Now that we have our function, we can use it in place of the <code>Vectorfield</code> node:</p>
+
+<p>``` python
+nuke.ViewerProcess.register(</p>
+
+<pre><code>"Rambo XXIV Dailies LUT",
+lutGroup3D,
+(
+    "/proj/ramboXXIV/share/luts/iridas/dailes.cube",
+    "AlexaV3LogC",
+)
+</code></pre>
+
+<p>)
+```</p>
+
+<h4>Final Thoughts</h4>
+
+<p>That should be it. You've still got some odds and ends left over- if you want to add a 3D LUT for every *.cube file found in a folder, you need some way of deriving the LUT's desired input colorspace.</p>
+
+<p>Also, a slicker means of doing this would involve creating a base LUT object class, with methods for doing things like deriving input colorspace, building the lut group, and registering it. A class level variable could then keep track of all the created LUTs for science.</p>
+]]></content>
+  </entry>
+  
+</feed>

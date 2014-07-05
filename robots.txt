@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://ThoriumGroup.github.com//sitemap.xml 

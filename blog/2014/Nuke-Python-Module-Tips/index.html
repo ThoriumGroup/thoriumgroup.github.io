@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Nuke Python Module Tips - Thorium for Nuke</title>
+  <meta name="author" content="Sean Wallitsch & Thorium Group">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ThoriumGroup.github.com//blog/2014/Nuke-Python-Module-Tips">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Thorium for Nuke" type="application/atom+xml">
+
+  <link href="/assets/bootstrap/dist/css/slate.css" rel="stylesheet" type="text/css">
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Thorium for Nuke</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:ThoriumGroup.github.com/">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-09T11:54:00-07:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Nuke Python Module Tips
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix"><p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
+
+<!-- more -->
+
+
+<p>The big issue that I can&#8217;t seem to get around is that <code>import nuke</code> will exit python if there aren&#8217;t any available Nuke render licenses. This exit doesn&#8217;t call a <code>SystemExit</code> exception, and isn&#8217;t any of the <code>__builtin__</code> exit calls or the <code>os._exit</code> and <code>thread.exit</code> calls. Depending on the license server configuration, one should be able to query the server to see if there are licenses, and only continue if one is available.</p>
+
+<h2>Adding the Nuke Library to Python</h2>
+
+<p>We can add Nuke&#8217;s library to the python path in one of two ways- either changing the system&#8217;s python path, or appending Nuke&#8217;s library directly in the python script. We&#8217;ll cover the second method here.</p>
+
+<p>It&#8217;s really as simple as importing <code>sys</code> and using <code>sys.path.append()</code>.</p>
+
+<h4>Hardcoding the Absolute Location</h4>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Version Locked Import</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/usr/apps/nuke-8.0v3/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>The downside of this is that it&#8217;s locked to a specific Nuke version and location. It&#8217;d be much easier to change the python path once for the entire system, than to change the Nuke version in a bunch of different files. The middle ground is to create an environment variable each script references, and then change that when the version or location changes.</p>
+
+<h4>Using an Env Variable for the Version</h4>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Version Variable </h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number marked'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number marked'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line marked start end'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked'>    <span class="s">&#39;/usr/apps/nuke-{ver}/lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">ver</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeVersion&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;8.0v1&#39;</span><span class="p">),</span>
+</span><span class='line marked'>    <span class="p">)</span>
+</span><span class='line marked end'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>The benefit with this method is that if the environment variable isn&#8217;t found, <code>os.getenv</code> will default to the provided <code>value</code> argument- which we can set to a known safe value- if not the latest.</p>
+
+<h4>Using an Env Variable for the Location</h4>
+
+<p>Using an environment variable for the nuke directory location is safer if there&#8217;s a possibility the application location will change.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Nuke Directory Variable</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked start'>    <span class="s">&#39;{nukeDir}lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked end'>        <span class="n">nukeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeDir&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;/usr/apps/nuke-8.0v1/&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Same method only the default value is a little messier. Note that many times calling environment variables with the dictionary-like <code>os.environ[varname]</code> is preferable, as you can do <code>Try/Except</code> looking for a <code>KeyError</code> and then do more advanced behavior in the event the variable isn&#8217;t set. We don&#8217;t need that in this simple example.</p>
+
+<h2>Using Nuke in a Command Line Interface</h2>
+
+<p>Having all of Nuke at our fingertips when making a CLI tool for image manipulation can be pretty powerful, but <code>import nuke</code> currently has a little problem with usage in CLIs- it eats up the command line arguments!</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Sample CLI Arg Script</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Save this to a script and call it and we get:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['']</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h4>Protecting Args</h4>
+
+<p>Protecting the arguments provided to the tool is pretty easy- just assign them
+to another variable and re-assign them after we import nuke.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Fixed CLI Arg Script</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number marked'>13</span>
+<span class='line-number marked'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">held</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line marked end'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="n">held</span>
+</span><span class='line marked end'><span class="k">del</span> <span class="n">held</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Now we get:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Now we can go on to parse those args with ArgumentParser or anything else.</p>
+
+<h2>System Library Conflicts</h2>
+
+<p>One thing to be aware of is that there is plenty of opportunity for library conflicts between what is normally compiled into Nuke (available inside of Nuke), and what you normally have in the system (available from within a python shell).</p>
+
+<p>If something doesn&#8217;t work in a python shell (even with the compiled python that ships with Nuke), but works inside of Nuke, it&#8217;s a good chance you&#8217;re looking at a library conflict.</p>
+
+<p>If you run into these, check with your System&#8217;s people and see if they can track it down. You might have to run a preload before launching the script, which is very undesirable but sometimes the only solution.</p>
+
+<p>If your systems people can replicate the conflict even with a bare install of your OS, make sure to report the conflict to Foundry as they are tracking these down.</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Sean Wallitsch & Thorium Group</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-09T11:54:00-07:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category label label-primary' href='/blog/categories/dev/'>dev</a> <a class='category label label-primary' href='/blog/categories/nuke/'>nuke</a> <a class='category label label-primary' href='/blog/categories/python/'>python</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://ThoriumGroup.github.com//blog/2014/Nuke-Python-Module-Tips/" data-via="" data-counturl="http://ThoriumGroup.github.com//blog/2014/Nuke-Python-Module-Tips/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/controlling-nuke-lut-behavior/" title="Previous Post: Controlling Nuke LUT behavior">&laquo; Controlling Nuke LUT behavior</a></li>
+            
+            
+            <li class="next"><a href="/blog/2014/SMPTE-Timecode-Segment/" title="Next Post: SMPTE Timecode Segment">SMPTE Timecode Segment &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2014/SMPTE-Timecode-Segment/">SMPTE Timecode Segment</a>
+    
+    <a class="list-group-item active" href="/blog/2014/Nuke-Python-Module-Tips/">Nuke Python Module Tips</a>
+    
+    <a class="list-group-item " href="/blog/2013/controlling-nuke-lut-behavior/">Controlling Nuke LUT Behavior</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    <a class="list-group-item " href="/blog/categories/dev/index.html">
+        <span class="badge">2</span>
+        dev
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/luts/index.html">
+        <span class="badge">1</span>
+        luts
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/nuke/index.html">
+        <span class="badge">2</span>
+        nuke
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/python/index.html">
+        <span class="badge">3</span>
+        python
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/editing/index.html">
+        <span class="badge">1</span>
+        editing
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/vfx/index.html">
+        <span class="badge">1</span>
+        vfx
+      </a>
+    
+  </div>
+</section>
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2014 - Sean Wallitsch & Thorium Group<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Thorium for Nuke]]></title>
+  <link href="http://ThoriumGroup.github.com//atom.xml" rel="self"/>
+  <link href="http://ThoriumGroup.github.com//"/>
+  <updated>2014-07-05T00:31:15-07:00</updated>
+  <id>http://ThoriumGroup.github.com//</id>
+  <author>
+    <name><![CDATA[Sean Wallitsch & Thorium Group]]></name>
+    <email><![CDATA[shidarin@alphamatte.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SMPTE Timecode Segment]]></title>
+    <link href="http://ThoriumGroup.github.com//blog/2014/SMPTE-Timecode-Segment/"/>
+    <updated>2014-04-19T15:50:00-07:00</updated>
+    <id>http://ThoriumGroup.github.com//blog/2014/SMPTE-Timecode-Segment</id>
+    <content type="html"><![CDATA[<p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
+
+<!-- more -->
+
+
+<p>In the end, it became so large it needed its own tests (Timecode can be pretty complex) and I ended up throwing it on a gist. It&#8217;s of limited use now, my end goal would be to develop a datetime style TimeCode class which could be added,
+subtracted, delta&#8217;d etc.</p>
+
+<h2>Other SMPTE Timecode projects</h2>
+
+<p>I might end up forking the abandoned <a href="https://pypi.python.org/pypi/pytimecode.py/0.1.0">pytimecode</a> (which is thankfully under an MIT License) and combining it with something like <a href="https://www.gitorious.org/smptecalq">smptecalc</a>, which is unfortunately without any attached license (so forking it and developing it on my own is legally iffy).</p>
+
+<h2>SMPTE TimeCode Segment</h2>
+
+<h3>Usage</h3>
+
+<p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
+</span><span class='line'><span class="s">&#39;12:45:23:08&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">dur</span>
+</span><span class='line'><span class="s">&#39;00:00:12:12&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Testing</h3>
+
+<p>The gist comes with a 100% coverage test suite, so if you just call the python file you&#8217;ll run the unittests.</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+</span><span class='line'>..........
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>Ran 10 tests in 0.001s
+</span><span class='line'>
+</span><span class='line'>OK</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Code</h2>
+
+<div><script src='https://gist.github.com/11091783.js?file='></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Nuke Python Module Tips]]></title>
+    <link href="http://ThoriumGroup.github.com//blog/2014/Nuke-Python-Module-Tips/"/>
+    <updated>2014-04-09T11:54:00-07:00</updated>
+    <id>http://ThoriumGroup.github.com//blog/2014/Nuke-Python-Module-Tips</id>
+    <content type="html"><![CDATA[<p>Using the Nuke 8 python module allows us to use Nuke in a lot of great ways, but there are some tricks to using it correctly. I&#8217;ll cover adding the Nuke library to the python path, using Nuke in a tool with command line arguments, and some common errors.</p>
+
+<!-- more -->
+
+
+<p>The big issue that I can&#8217;t seem to get around is that <code>import nuke</code> will exit python if there aren&#8217;t any available Nuke render licenses. This exit doesn&#8217;t call a <code>SystemExit</code> exception, and isn&#8217;t any of the <code>__builtin__</code> exit calls or the <code>os._exit</code> and <code>thread.exit</code> calls. Depending on the license server configuration, one should be able to query the server to see if there are licenses, and only continue if one is available.</p>
+
+<h2>Adding the Nuke Library to Python</h2>
+
+<p>We can add Nuke&#8217;s library to the python path in one of two ways- either changing the system&#8217;s python path, or appending Nuke&#8217;s library directly in the python script. We&#8217;ll cover the second method here.</p>
+
+<p>It&#8217;s really as simple as importing <code>sys</code> and using <code>sys.path.append()</code>.</p>
+
+<h4>Hardcoding the Absolute Location</h4>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Version Locked Import</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/usr/apps/nuke-8.0v3/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The downside of this is that it&#8217;s locked to a specific Nuke version and location. It&#8217;d be much easier to change the python path once for the entire system, than to change the Nuke version in a bunch of different files. The middle ground is to create an environment variable each script references, and then change that when the version or location changes.</p>
+
+<h4>Using an Env Variable for the Version</h4>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Version Variable </h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number marked'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number marked'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line marked start end'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked'>    <span class="s">&#39;/usr/apps/nuke-{ver}/lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">ver</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeVersion&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;8.0v1&#39;</span><span class="p">),</span>
+</span><span class='line marked'>    <span class="p">)</span>
+</span><span class='line marked end'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The benefit with this method is that if the environment variable isn&#8217;t found, <code>os.getenv</code> will default to the provided <code>value</code> argument- which we can set to a known safe value- if not the latest.</p>
+
+<h4>Using an Env Variable for the Location</h4>
+
+<p>Using an environment variable for the nuke directory location is safer if there&#8217;s a possibility the application location will change.</p>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Nuke Directory Variable</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span class='line marked start'>    <span class="s">&#39;{nukeDir}lib/python2.7/site-packages&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+</span><span class='line marked end'>        <span class="n">nukeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getEnv</span><span class="p">(</span><span class="n">varname</span><span class="o">=</span><span class="s">&#39;nukeDir&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;/usr/apps/nuke-8.0v1/&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Same method only the default value is a little messier. Note that many times calling environment variables with the dictionary-like <code>os.environ[varname]</code> is preferable, as you can do <code>Try/Except</code> looking for a <code>KeyError</code> and then do more advanced behavior in the event the variable isn&#8217;t set. We don&#8217;t need that in this simple example.</p>
+
+<h2>Using Nuke in a Command Line Interface</h2>
+
+<p>Having all of Nuke at our fingertips when making a CLI tool for image manipulation can be pretty powerful, but <code>import nuke</code> currently has a little problem with usage in CLIs- it eats up the command line arguments!</p>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Sample CLI Arg Script</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Save this to a script and call it and we get:</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['']</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Protecting Args</h4>
+
+<p>Protecting the arguments provided to the tool is pretty easy- just assign them
+to another variable and re-assign them after we import nuke.</p>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Fixed CLI Arg Script</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number marked'>13</span>
+<span class='line-number marked'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># Standard Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments before &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">held</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span><span class='line marked end'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Nuke Imports</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">nuke</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="n">held</span>
+</span><span class='line marked end'><span class="k">del</span> <span class="n">held</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">print</span> <span class="s">&#39;Printing command line arguments after &quot;import nuke&quot;:&#39;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we get:</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>>>> python test.py hello world
+</span><span class='line'>Printing command line arguments before "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']
+</span><span class='line'>Printing command line arguments after "import nuke":
+</span><span class='line'>['test.py', 'hello', 'world']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can go on to parse those args with ArgumentParser or anything else.</p>
+
+<h2>System Library Conflicts</h2>
+
+<p>One thing to be aware of is that there is plenty of opportunity for library conflicts between what is normally compiled into Nuke (available inside of Nuke), and what you normally have in the system (available from within a python shell).</p>
+
+<p>If something doesn&#8217;t work in a python shell (even with the compiled python that ships with Nuke), but works inside of Nuke, it&#8217;s a good chance you&#8217;re looking at a library conflict.</p>
+
+<p>If you run into these, check with your System&#8217;s people and see if they can track it down. You might have to run a preload before launching the script, which is very undesirable but sometimes the only solution.</p>
+
+<p>If your systems people can replicate the conflict even with a bare install of your OS, make sure to report the conflict to Foundry as they are tracking these down.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Controlling Nuke LUT behavior]]></title>
+    <link href="http://ThoriumGroup.github.com//blog/2013/controlling-nuke-lut-behavior/"/>
+    <updated>2013-12-22T14:33:00-08:00</updated>
+    <id>http://ThoriumGroup.github.com//blog/2013/controlling-nuke-lut-behavior</id>
+    <content type="html"><![CDATA[<p>The LUT implementation steps that Foundry advises for both 1D and 3D LUTs can use some work. By default, the 1D LUTs affect every channel (even alphas). For 3D LUTs it depends on the node used, but problems can vary from only affecting the default <code>rgb</code> to touching every layer- even data layers.</p>
+
+<!-- more -->
+
+
+<p>For those not totally familiar with the concept of LUTs, a good overview is <a href="http://www.lightillusion.com/luts.html">here</a>, while the wikipedia page for <a href="http://en.wikipedia.org/wiki/3D_lookup_table">3D LUTs</a> is actually pretty decent.</p>
+
+<p>All code presented here is covered under a standard <a href="http://ThoriumGroup.github.com//licensing">MIT license</a>, and owned by Rhythm &amp; Hues (posted with permission). A <a href="http://gist.github.com/shidarin/9925799">gist</a> of this code is also published.</p>
+
+<h2>1D LUTs</h2>
+
+<p>The workflow the foundry advises for a 1D LUT is as follows:</p>
+
+<blockquote><p>To register one of the LUTs in the Project Settings as a Viewer Process, use, for example, the following function in your init.py:</p></blockquote>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Nuke Online Help 8v1 or User Guide 7v8 (page 611) </h3><a href='http://help.thefoundry.co.uk/nuke/8.0/#user_guide/configuring_nuke/using_gizmo_viewer_process.html' title='Download code'> Link</a></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">nuke</span><span class="o">.</span><span class="n">ViewerProcess</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+</span><span class='line'>    <span class="s">&quot;Cineon&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">nuke</span><span class="o">.</span><span class="n">createNode</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line marked start end'>        <span class="s">&quot;ViewerProcess_1DLUT&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&quot;current Cineon&quot;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>This registers a built-in gizmo called <code>ViewerProcess_1DLUT</code> as a Viewer Process and sets it to use the Cineon LUT. The registered Viewer Process appears in the Viewer Process dropdown menu as Cineon.</p></blockquote>
+
+<h4>Protecting The Alpha Channel</h4>
+
+<p>The built-in gizmo unfortunately lacks the one option we need, limiting the application of the LUT to <code>rgb</code> channels only. However, the gizmo only includes a single node, <code>ViewerLUT</code>, that does include that option. Let&#8217;s create a basic group that includes the <code>ViewerLUT</code> node, but gives us more freedom.</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number marked'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">lutGroup1D</span><span class="p">(</span><span class="n">lutName</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Builds a proper 1D viewer lut that only affects the rgb channels&quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="c"># Start our group</span>
+</span><span class='line'>    <span class="n">group</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">inputNode</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Input</span><span class="p">()</span>  <span class="c"># Group input</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">conversion</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">createNode</span><span class="p">(</span><span class="s">&#39;ViewerLUT&#39;</span><span class="p">)</span>
+</span><span class='line marked start end'>    <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;rgb_only&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">lutName</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversion</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inputNode</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">conversion</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">group</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The key is line 10, we need to toggle the <code>rgb_only</code> bool checkbox on the <code>ViewerLUT</code> node so that it doesn&#8217;t affect the alpha channels anymore.</p>
+
+<p>Despite recommending the usage of the <code>ViewerProcess_1DLUT</code>, the Foundry does point out that parameter of the <code>ViewerLUT</code> on the very next page.</p>
+
+<p>Now our 1D LUT is no longer affecting alpha channels, but unfortunately several layers representing data channels. Motion vectors, zdepth, etc, are still being hit with our LUT, as those channels are being shuffled into <code>rgb</code> for display purposes.</p>
+
+<h4>Protecting Data Channels</h4>
+
+<p>We need to add a <code>Remove</code> node to strip these layers before the <code>ViewerLUT</code> node, and then a <code>Copy</code> node afterwards to add them back in. If those layers aren&#8217;t present in the incoming stream, Nuke doesn&#8217;t complain.</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="c"># Remove special layers if present</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">REMOVE_KNOBS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s">&#39;operation&#39;</span><span class="p">:</span> <span class="s">&#39;remove&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels&#39;</span><span class="p">:</span> <span class="s">&#39;depth&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels2&#39;</span><span class="p">:</span> <span class="s">&#39;motion&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels3&#39;</span><span class="p">:</span> <span class="s">&#39;forward&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels4&#39;</span><span class="p">:</span> <span class="s">&#39;backward&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">remove</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Remove</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">knob</span> <span class="ow">in</span> <span class="n">REMOVE_KNOBS</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">remove</span><span class="p">[</span><span class="n">knob</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">REMOVE_KNOBS</span><span class="p">[</span><span class="n">knob</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When changing many knob values at once, it&#8217;s often helpful to define a dictionary whose keys are the knob name, and values are the desired knob value. Then we can iterate through the dictionary, grabbing the knob object, and setting it to the retrieved value from the dictionary.</p>
+
+<p>Here&#8217;s the copy node we need that adds the removed layers back in from the original input image stream:</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number marked'>33</span>
+<span class='line-number marked'>34</span>
+<span class='line-number marked'>35</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'>    <span class="c"># Add our special channels back in</span>
+</span><span class='line'>    <span class="n">copy</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">,</span> <span class="n">conversion</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line marked start'>    <span class="c"># We need to eliminate any attempts at auto copy.</span>
+</span><span class='line marked'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+</span><span class='line marked end'>        <span class="n">copy</span><span class="p">[</span><span class="s">&#39;from&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With the copy, we set it to <code>all</code> channels and remove the automatically filled in values in the <code>from0</code> and on knobs. We&#8217;ll change the input to the <code>Output</code> node below to be linked to the <code>copy</code> node, and then we&#8217;ll add an expanded docstring.</p>
+
+<h4>Final 1D LUT Function</h4>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>lutGroup1D (with changes marked)</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number marked'>3</span>
+<span class='line-number marked'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number marked'>9</span>
+<span class='line-number marked'>10</span>
+<span class='line-number marked'>11</span>
+<span class='line-number marked'>12</span>
+<span class='line-number marked'>13</span>
+<span class='line-number marked'>14</span>
+<span class='line-number marked'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number marked'>23</span>
+<span class='line-number marked'>24</span>
+<span class='line-number marked'>25</span>
+<span class='line-number marked'>26</span>
+<span class='line-number marked'>27</span>
+<span class='line-number marked'>28</span>
+<span class='line-number marked'>29</span>
+<span class='line-number marked'>30</span>
+<span class='line-number marked'>31</span>
+<span class='line-number marked'>32</span>
+<span class='line-number marked'>33</span>
+<span class='line-number marked'>34</span>
+<span class='line-number marked'>35</span>
+<span class='line-number marked'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number marked'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number marked'>43</span>
+<span class='line-number marked'>44</span>
+<span class='line-number marked'>45</span>
+<span class='line-number marked'>46</span>
+<span class='line-number marked'>47</span>
+<span class='line-number marked'>48</span>
+<span class='line-number marked'>49</span>
+<span class='line-number marked'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number marked'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">lutGroup1D</span><span class="p">(</span><span class="n">lutName</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Builds a proper 1D viewer lut that only affects the rgb channels</span>
+</span><span class='line marked start'>
+</span><span class='line marked'><span class="sd">    Args:</span>
+</span><span class='line marked'><span class="sd">        lutName : (str)</span>
+</span><span class='line marked'><span class="sd">            The 1d lut name. Must be already registered in Nuke&#39;s settings.</span>
+</span><span class='line marked'>
+</span><span class='line marked'><span class="sd">    Raises:</span>
+</span><span class='line marked'><span class="sd">        N/A</span>
+</span><span class='line marked'>
+</span><span class='line marked'><span class="sd">    Returns:</span>
+</span><span class='line marked'><span class="sd">        (&lt;nuke.node.Group&gt;)</span>
+</span><span class='line marked'><span class="sd">            A nuke group node that will handle the 1d LUT correctly.</span>
+</span><span class='line marked'>
+</span><span class='line marked end'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="c"># Start our group</span>
+</span><span class='line'>    <span class="n">group</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">inputNode</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Input</span><span class="p">()</span>  <span class="c"># Group input</span>
+</span><span class='line'>
+</span><span class='line marked start'>    <span class="n">REMOVE_KNOBS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line marked'>        <span class="s">&#39;operation&#39;</span><span class="p">:</span> <span class="s">&#39;remove&#39;</span><span class="p">,</span>
+</span><span class='line marked'>        <span class="s">&#39;channels&#39;</span><span class="p">:</span> <span class="s">&#39;depth&#39;</span><span class="p">,</span>
+</span><span class='line marked'>        <span class="s">&#39;channels2&#39;</span><span class="p">:</span> <span class="s">&#39;motion&#39;</span><span class="p">,</span>
+</span><span class='line marked'>        <span class="s">&#39;channels3&#39;</span><span class="p">:</span> <span class="s">&#39;forward&#39;</span><span class="p">,</span>
+</span><span class='line marked'>        <span class="s">&#39;channels4&#39;</span><span class="p">:</span> <span class="s">&#39;backward&#39;</span>
+</span><span class='line marked'>    <span class="p">}</span>
+</span><span class='line marked'>
+</span><span class='line marked'>    <span class="c"># Remove special layers if present</span>
+</span><span class='line marked'>    <span class="n">remove</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Remove</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">],</span>
+</span><span class='line marked'>    <span class="p">)</span>
+</span><span class='line marked'>    <span class="k">for</span> <span class="n">knob</span> <span class="ow">in</span> <span class="n">REMOVE_KNOBS</span><span class="p">:</span>
+</span><span class='line marked end'>        <span class="n">remove</span><span class="p">[</span><span class="n">knob</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">REMOVE_KNOBS</span><span class="p">[</span><span class="n">knob</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">conversion</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">createNode</span><span class="p">(</span><span class="s">&#39;ViewerLUT&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;rgb_only&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line marked start end'>    <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">lutName</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">conversion</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">remove</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line marked start'>    <span class="c"># Add our special channels back in</span>
+</span><span class='line marked'>    <span class="n">copy</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">,</span> <span class="n">conversion</span><span class="p">],</span>
+</span><span class='line marked'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span>
+</span><span class='line marked'>    <span class="p">)</span>
+</span><span class='line marked'>    <span class="c"># We need to eliminate any attempts at auto copy.</span>
+</span><span class='line marked'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+</span><span class='line marked end'>        <span class="n">copy</span><span class="p">[</span><span class="s">&#39;from&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span>
+</span><span class='line marked start end'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">copy</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">group</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s important to return the <code>group</code> object, because that returned object will be used as the Viewer Process itself!</p>
+
+<h4>Adding A LUT With lutGroup1D()</h4>
+
+<p>Now that we have our function, we can use it in place of the <code>ViewerProcess_1DLUT</code> node:</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number marked'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">nuke</span><span class="o">.</span><span class="n">ViewerProcess</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+</span><span class='line'>    <span class="s">&quot;Cineon&quot;</span><span class="p">,</span>
+</span><span class='line marked start end'>    <span class="n">lutGroup1D</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line marked start end'>        <span class="s">&quot;Cineon&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>3D LUTs</h2>
+
+<p>We have 3 goals for 3D LUTs:</p>
+
+<ol>
+<li>Make sure every color layer is being affected by the LUT transform.</li>
+<li>Protect data layers from the transform.</li>
+<li>Ensure the transform happens in the correct colorspace.</li>
+</ol>
+
+
+<p>We don&#8217;t need to worry about 3D LUTs affecting the alpha channel, because while a 1D LUT affects every channel the same, a 3D LUT has instructions for each color channel specifically- meaning it won&#8217;t have any instructions for alpha channels and will leave them alone.</p>
+
+<p>Foundry gives some example nodes to use for 3D LUTs, such as the <code>Vectorfield</code> node, but doesn&#8217;t mention the best node to use, the <a href="http://opencolorio.org/">OpenColorIO</a> node, <code>OCIOFileTransform</code>.</p>
+
+<h5>Why Use OpenColorIO?</h5>
+
+<p><a href="https://github.com/imageworks/OpenColorIO">OpenColorIO</a> is an open source project sponsored by Sony Imageworks. It has a lot of features, but right now we&#8217;re primarily interested in it because it allows us to select which layers to apply the LUT to- including all of them.</p>
+
+<p>In comparison, the <code>Vectorfield</code> node only affects the default <code>rgb</code> layer, which is a pretty large handicap. The <code>Vectorfield</code> node does have an option for colorspace conversion of input images, which is a plus. We&#8217;ll have to do our own colorspace conversion before applying the LUT with <code>OCIOFileTransform</code>, as almost all LUTs expect the inputted channels to be in a Log colorspace.</p>
+
+<h4>Building A Basic Viewer Process With OCIOFileTransform</h4>
+
+<p>We&#8217;ll use the basic framework of our <code>lutGroup1D()</code> function to create a <code>lutGroup3D()</code>, including protection of data layers.</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number marked'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number marked'>24</span>
+<span class='line-number marked'>25</span>
+<span class='line-number marked'>26</span>
+<span class='line-number marked'>27</span>
+<span class='line-number marked'>28</span>
+<span class='line-number marked'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number marked'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line marked start end'><span class="k">def</span> <span class="nf">lutGroup3D</span><span class="p">(</span><span class="n">lutFile</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Builds a proper 3D viewer lut that only affects the rgb channels&quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="c"># Start our group</span>
+</span><span class='line'>    <span class="n">group</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">inputNode</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Input</span><span class="p">()</span>  <span class="c"># Group input</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">REMOVE_KNOBS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s">&#39;operation&#39;</span><span class="p">:</span> <span class="s">&#39;remove&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels&#39;</span><span class="p">:</span> <span class="s">&#39;depth&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels2&#39;</span><span class="p">:</span> <span class="s">&#39;motion&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels3&#39;</span><span class="p">:</span> <span class="s">&#39;forward&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels4&#39;</span><span class="p">:</span> <span class="s">&#39;backward&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Remove special layers if present</span>
+</span><span class='line'>    <span class="n">remove</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Remove</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">knob</span> <span class="ow">in</span> <span class="n">REMOVE_KNOBS</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">remove</span><span class="p">[</span><span class="n">knob</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">REMOVE_KNOBS</span><span class="p">[</span><span class="n">knob</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line marked start'>    <span class="c"># Use our 3d LUT file</span>
+</span><span class='line marked'>    <span class="n">mainLut</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">OCIOFileTransform</span><span class="p">(</span>
+</span><span class='line marked'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">remove</span><span class="p">],</span>
+</span><span class='line marked'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">,</span>
+</span><span class='line marked'>        <span class="nb">file</span><span class="o">=</span><span class="n">lutFile</span>
+</span><span class='line marked end'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Add our special channels back in</span>
+</span><span class='line'>    <span class="n">copy</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span>
+</span><span class='line marked start end'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">,</span> <span class="n">mainLut</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="c"># We need to eliminate any attempts at auto copy.</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">copy</span><span class="p">[</span><span class="s">&#39;from&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">copy</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">group</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve only had to change a few lines here. Instead of a string representing an already registered LUT name, the <code>OCIOFileTransform</code> requires a full filepath, which we need to provide in the <code>lutFile</code> arg.</p>
+
+<p>In addition, we&#8217;ve set <code>channels</code> to <code>all</code>, which (unlike the <code>Vectorfield</code> node) will ensure that every layer&#8217;s <code>rgb</code> will get affected. We&#8217;re already protecting the data channels by removing them, just like in <code>lutGroup1D()</code>.</p>
+
+<h4>Setting Input Colorspace</h4>
+
+<p>Most LUTs require an input colorspace that&#8217;s different from Linear space that Nuke works in. <code>Vectorfield</code> has this conversion as a built in option, but <code>OCIOFileTransform</code> does not, so we&#8217;ll have to add it before getting the correct result.</p>
+
+<p>Traditionally the expected input colorspace is Cineon Log, but on an Arri Alexa show it would be LogC. We&#8217;ll specify which in an arg of the function, and use use a <code>ViewerLUT</code> node to convert from to that.</p>
+
+<p>Why use <code>ViewerLUT</code> as opposed to a <code>Colorspace</code>? Because <code>ViewerLUT</code> lets us specify any of the 1D LUTs currently within the Nuke script, not just the built in ones. This means your pipeline can specify a different version of Cineon Log or an older revision of Alexa LogC.</p>
+
+<p>We&#8217;ll make this input colorspace optional, so if the 3D LUT is built for linear values you can omit the arg.</p>
+
+<h4>Final 3D LUT Function</h4>
+
+<figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>lutGroup3D (with changes marked)</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number marked'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number marked'>4</span>
+<span class='line-number marked'>5</span>
+<span class='line-number marked'>6</span>
+<span class='line-number marked'>7</span>
+<span class='line-number marked'>8</span>
+<span class='line-number marked'>9</span>
+<span class='line-number marked'>10</span>
+<span class='line-number marked'>11</span>
+<span class='line-number marked'>12</span>
+<span class='line-number marked'>13</span>
+<span class='line-number marked'>14</span>
+<span class='line-number marked'>15</span>
+<span class='line-number marked'>16</span>
+<span class='line-number marked'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number marked'>39</span>
+<span class='line-number marked'>40</span>
+<span class='line-number marked'>41</span>
+<span class='line-number marked'>42</span>
+<span class='line-number marked'>43</span>
+<span class='line-number marked'>44</span>
+<span class='line-number marked'>45</span>
+<span class='line-number marked'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number marked'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line marked start end'><span class="k">def</span> <span class="nf">lutGroup3D</span><span class="p">(</span><span class="n">lutFile</span><span class="p">,</span> <span class="n">inputSpace</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Builds a proper 3D viewer lut that only affects the rgb channels</span>
+</span><span class='line'>
+</span><span class='line marked start'><span class="sd">    Args:</span>
+</span><span class='line marked'><span class="sd">        lutFile : (str)</span>
+</span><span class='line marked'><span class="sd">            The filepath to a 3d lut</span>
+</span><span class='line marked'><span class="sd">        inputSpace=None : (str)</span>
+</span><span class='line marked'><span class="sd">            The colorspace the 3d lut file expects.</span>
+</span><span class='line marked'>
+</span><span class='line marked'><span class="sd">    Raises:</span>
+</span><span class='line marked'><span class="sd">        N/A</span>
+</span><span class='line marked'>
+</span><span class='line marked'><span class="sd">    Returns:</span>
+</span><span class='line marked'><span class="sd">        (&lt;nuke.node.Group&gt;)</span>
+</span><span class='line marked'><span class="sd">            A nuke node group that will handle the 3d LUT correctly.</span>
+</span><span class='line marked'>
+</span><span class='line marked end'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="c"># Start our group</span>
+</span><span class='line'>    <span class="n">group</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">inputNode</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Input</span><span class="p">()</span>  <span class="c"># Group input</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">REMOVE_KNOBS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s">&#39;operation&#39;</span><span class="p">:</span> <span class="s">&#39;remove&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels&#39;</span><span class="p">:</span> <span class="s">&#39;depth&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels2&#39;</span><span class="p">:</span> <span class="s">&#39;motion&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels3&#39;</span><span class="p">:</span> <span class="s">&#39;forward&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&#39;channels4&#39;</span><span class="p">:</span> <span class="s">&#39;backward&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Remove special layers if present</span>
+</span><span class='line'>    <span class="n">remove</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Remove</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">knob</span> <span class="ow">in</span> <span class="n">REMOVE_KNOBS</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">remove</span><span class="p">[</span><span class="n">knob</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">REMOVE_KNOBS</span><span class="p">[</span><span class="n">knob</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line marked start'>    <span class="k">if</span> <span class="n">inputSpace</span><span class="p">:</span>
+</span><span class='line marked'>        <span class="c"># Convert to Cineon or LogC colorspace</span>
+</span><span class='line marked'>        <span class="n">conversion</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">createNode</span><span class="p">(</span><span class="s">&#39;ViewerLUT&#39;</span><span class="p">)</span>
+</span><span class='line marked'>        <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;rgb_only&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line marked'>        <span class="n">conversion</span><span class="p">[</span><span class="s">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">inputSpace</span><span class="p">)</span>
+</span><span class='line marked'>        <span class="n">conversion</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">remove</span><span class="p">)</span>
+</span><span class='line marked'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line marked end'>        <span class="n">conversion</span> <span class="o">=</span> <span class="n">remove</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Use our 3d LUT file</span>
+</span><span class='line'>    <span class="n">mainLut</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">OCIOFileTransform</span><span class="p">(</span>
+</span><span class='line marked start end'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">conversion</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nb">file</span><span class="o">=</span><span class="n">lutFile</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Add our special channels back in</span>
+</span><span class='line'>    <span class="n">copy</span> <span class="o">=</span> <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inputNode</span><span class="p">,</span> <span class="n">mainLut</span><span class="p">],</span>
+</span><span class='line'>        <span class="n">channels</span><span class="o">=</span><span class="s">&#39;all&#39;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="c"># We need to eliminate any attempts at auto copy.</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">copy</span><span class="p">[</span><span class="s">&#39;from&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">nuke</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">copy</span><span class="p">],</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">group</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">group</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Adding A LUT With lutGroup3D()</h4>
+
+<p>Now that we have our function, we can use it in place of the <code>Vectorfield</code> node:</p>
+
+<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">nuke</span><span class="o">.</span><span class="n">ViewerProcess</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+</span><span class='line'>    <span class="s">&quot;Rambo XXIV Dailies LUT&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">lutGroup3D</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line'>        <span class="s">&quot;/proj/ramboXXIV/share/luts/iridas/dailes.cube&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&quot;AlexaV3LogC&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Final Thoughts</h4>
+
+<p>That should be it. You&#8217;ve still got some odds and ends left over- if you want to add a 3D LUT for every *.cube file found in a folder, you need some way of deriving the LUT&#8217;s desired input colorspace.</p>
+
+<p>Also, a slicker means of doing this would involve creating a base LUT object class, with methods for doing things like deriving input colorspace, building the lut group, and registering it. A class level variable could then keep track of all the created LUTs for science.</p>
+]]></content>
+  </entry>
+  
+</feed>

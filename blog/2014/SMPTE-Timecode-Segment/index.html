@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SMPTE Timecode Segment - Thorium for Nuke</title>
+  <meta name="author" content="Sean Wallitsch & Thorium Group">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ThoriumGroup.github.com//blog/2014/SMPTE-Timecode-Segment">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Thorium for Nuke" type="application/atom+xml">
+
+  <link href="/assets/bootstrap/dist/css/slate.css" rel="stylesheet" type="text/css">
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Thorium for Nuke</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:ThoriumGroup.github.com/">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-19T15:50:00-07:00" pubdate data-updated="true">Apr 19<span>th</span>, 2014</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        SMPTE Timecode Segment
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix"><p>While developing a test suite for another project, I started writing a bit of python to generate SMPTE timecode- start, end, and duration. I needed to have the ability for it to generate random timecode as well.</p>
+
+<!-- more -->
+
+
+<p>In the end, it became so large it needed its own tests (Timecode can be pretty complex) and I ended up throwing it on a gist. It&#8217;s of limited use now, my end goal would be to develop a datetime style TimeCode class which could be added,
+subtracted, delta&#8217;d etc.</p>
+
+<h2>Other SMPTE Timecode projects</h2>
+
+<p>I might end up forking the abandoned <a href="https://pypi.python.org/pypi/pytimecode.py/0.1.0">pytimecode</a> (which is thankfully under an MIT License) and combining it with something like <a href="https://www.gitorious.org/smptecalq">smptecalc</a>, which is unfortunately without any attached license (so forking it and developing it on my own is legally iffy).</p>
+
+<h2>SMPTE TimeCode Segment</h2>
+
+<h3>Usage</h3>
+
+<p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
+</span><span class='line'><span class="s">&#39;12:45:23:08&#39;</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">dur</span>
+</span><span class='line'><span class="s">&#39;00:00:12:12&#39;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h3>Testing</h3>
+
+<p>The gist comes with a 100% coverage test suite, so if you just call the python file you&#8217;ll run the unittests.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+</span><span class='line'>..........
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>Ran 10 tests in 0.001s
+</span><span class='line'>
+</span><span class='line'>OK</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h2>Code</h2>
+
+<div><script src='https://gist.github.com/11091783.js?file='></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Sean Wallitsch & Thorium Group</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-19T15:50:00-07:00" pubdate data-updated="true">Apr 19<span>th</span>, 2014</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category label label-primary' href='/blog/categories/editing/'>editing</a> <a class='category label label-primary' href='/blog/categories/python/'>python</a> <a class='category label label-primary' href='/blog/categories/vfx/'>vfx</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://ThoriumGroup.github.com//blog/2014/SMPTE-Timecode-Segment/" data-via="" data-counturl="http://ThoriumGroup.github.com//blog/2014/SMPTE-Timecode-Segment/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2014/Nuke-Python-Module-Tips/" title="Previous Post: Nuke Python Module Tips">&laquo; Nuke Python Module Tips</a></li>
+            
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item active" href="/blog/2014/SMPTE-Timecode-Segment/">SMPTE Timecode Segment</a>
+    
+    <a class="list-group-item " href="/blog/2014/Nuke-Python-Module-Tips/">Nuke Python Module Tips</a>
+    
+    <a class="list-group-item " href="/blog/2013/controlling-nuke-lut-behavior/">Controlling Nuke LUT Behavior</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    <a class="list-group-item " href="/blog/categories/dev/index.html">
+        <span class="badge">2</span>
+        dev
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/luts/index.html">
+        <span class="badge">1</span>
+        luts
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/nuke/index.html">
+        <span class="badge">2</span>
+        nuke
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/python/index.html">
+        <span class="badge">3</span>
+        python
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/editing/index.html">
+        <span class="badge">1</span>
+        editing
+      </a>
+    
+    
+    <a class="list-group-item " href="/blog/categories/vfx/index.html">
+        <span class="badge">1</span>
+        vfx
+      </a>
+    
+  </div>
+</section>
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2014 - Sean Wallitsch & Thorium Group<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

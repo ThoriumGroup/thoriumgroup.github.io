@@ -53,6 +53,7 @@ html .gist .gist-file {
   }
   .gist-syntax {
     background: none !important;
+    border-bottom: 1px solid #000;
     .gist-highlight {
       background: $base03 !important;
     }
@@ -64,7 +65,8 @@ html .gist .gist-file {
   .gist-meta {
    padding: .6em 0.8em;
    //border: 1px solid lighten($base02, 2) !important;
-   color: $base01;
+   color: #bcbcbc;
+   text-shadow: #333 -1px -1px;
    font-size: .7em !important;
    background: transparent;
 // @if $solarized == light {
@@ -77,7 +79,8 @@ html .gist .gist-file {
    @extend .sans;
    line-height: 1.5em;
     a {
-      color: mix($base1, $base01) !important;
+      color: #bcbcbc;
+      text-shadow: #333 -1px -1px;
       @include hover-link;
       &:hover { color: $base1 !important; }
     }
@@ -86,7 +89,8 @@ html .gist .gist-file {
       left: 0.5em;
       position: absolute;
       //right:-10px;
-      color: #474747 !important;
+      color: #bcbcbc !important;
+      text-shadow: #333 -1px -1px;
       //@extend .code-title;
       &:hover { color: $link-color !important; }
     }
@@ -94,10 +98,10 @@ html .gist .gist-file {
       top: 0.75em;
       position: absolute; right: .8em;
       @include hover-link;
-      //color: #666 !important;
+      color: #bcbcbc !important;
       z-index: 1;
       font-size: 13px;
-      //text-shadow: #cbcccc 0 1px 0;
+      text-shadow: #333 -1px -1px;
       padding-left: 3em;
     }
   }
@@ -223,7 +227,7 @@ pre, .highlight, .gist-highlight {
   &::-webkit-scrollbar-thumb:horizontal { background: $solar-scroll-thumb;  -webkit-border-radius: 4px; border-radius: 4px }
 }
 
-.highlight code { 
+.highlight code {
   @extend .pre-code; background: #000;
 }
 figure.code, .gist {
@@ -258,6 +262,7 @@ figure.code, .gist {
   border-left-color: #a5a5a5;
   border-right-color: #a5a5a5;
   border-bottom: 0;
+
 }
 
 .download-source {
@@ -273,10 +278,10 @@ figure.code, .gist {
 
 figure.code:not(.panel), .gist {
     /* unpatched code_block or include_code plugin */
-    border: 1px solid #ddd;
+    border: 1px solid #000;
     @include border-radius(5px);
     .highlight {
-        border-top: 1px solid #ddd;
+        border-top: 1px solid #000;
         @include border-radius(5px);
         @include border-top-radius(0);
     }
@@ -284,8 +289,8 @@ figure.code:not(.panel), .gist {
         padding: 10px 15px;
     }
     figcaption, .gist-file {
-        color: #333;
-        background-color: #f5f5f5;
+        color: #C8C8C8;
+        background-color: #3E444C;
         @include border-radius(5px);
         span, a[href*='#file'] {
             font-size: 16px;

@@ -24,7 +24,7 @@ I might end up forking the abandoned [pytimecode](https://pypi.python.org/pypi/p
 
 `TimeCodeSegment` takes `hour`, `minute`, `second`, and `frame` args for initializing the starting timecode, and `duration` (in frames) and `fps` for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.
 
-``` python
+``` python linenos:false
 >>> tc = TimeCodeSegment(hour=12, minute=45, second=10, frame=20, duration=300)
 >>> tc.start
 '12:45:10:20'
@@ -38,7 +38,7 @@ I might end up forking the abandoned [pytimecode](https://pypi.python.org/pypi/p
 
 The gist comes with a 100% coverage test suite, so if you just call the python file you'll run the unittests.
 
-```
+``` linenos:false
 python smpte_timecode_segment.py 
 ..........
 ----------------------------------------------------------------------

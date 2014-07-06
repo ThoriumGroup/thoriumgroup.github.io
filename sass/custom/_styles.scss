@@ -18,3 +18,44 @@ html, body {
 footer[role=contentinfo] {
     height: 60px;
 }
+
+/* what is thorium panel */
+$nuke-color: #66121b;
+$link-color: #efa400;
+#what-is-thorium {
+    &, h3 {
+        color: white;
+    }
+    a {
+        color: $link-color;
+        &:hover { color: lighten($link-color, 12%); }
+    }
+    .panel-heading {
+        border-color: $nuke-color;
+        background-color: lighten($nuke-color, 18%);
+        background-image: linear-gradient(color-stops(lighten($nuke-color, 18%), lighten($nuke-color, 6%)));
+    }
+    border-color: $nuke-color;
+    background: url(../images/thorium-background.png);
+    @include background-size(cover);
+    .btn {
+        text-shadow: none;
+        font-weight: bold;
+        background-color: lighten($nuke-color, 18%);
+        background-image: linear-gradient(color-stops(lighten($nuke-color, 18%), lighten($nuke-color, 6%)));
+        color: $link-color;
+        border-color: darken($link-color, 12%);
+        @include transition(color 0.2s ease-in ease-out, background-color 0.2s ease-in ease-out);
+        &:hover {
+            color: $nuke-color;
+            background-color: $link-color;
+            background-image: linear-gradient(color-stops(lighten($link-color, 8%), $link-color));
+        }
+    }
+    .thorium-logo {
+        max-width: 100%;
+        width: 389px;
+        margin: 0 auto 0.6em;
+        display: block;
+    }
+}

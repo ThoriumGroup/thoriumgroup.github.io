@@ -27,6 +27,25 @@ indistinguishable from built-in Nuke tools.**
 What Makes Thorium Special
 ==========================
 
+One Package to Update, Many Modules
+-----------------------------------
+
+Every time a package Thorium contains gets a new release, Thorium gets a new
+release. Instead of tracking each sub-module, all users of Thorium have to do
+is update Thorium.
+
+Thorium can even let you know if there's a new release.
+
+Thorium Specific Tools
+----------------------
+
+While Thorium is primarily a combination of other modules, it also contains 
+tools and functionality specific to Thorium. For the full list see the 
+[Thorium Docs](docs/thorium.html).
+
+Easy Install
+------------
+
 Once you have Thorium downloaded and in the Python path (see 
 [Thorium Setup](setup/) for instructions), you can get all of Thorium in less
 than 4 lines of code:
@@ -78,7 +97,7 @@ UI Consistency
 For modules that add menu items, those menu items are either placed in the 
 correct Nuke native menus, or under a new `User` menu, and appropriate 
 sub-menus as needed. The `User` menu name can even be given a new name when you
-call the `run()` function (see `Nuke Installation` below).
+call the `run()` function (see [Nuke Installation](#NukeInstall) below).
 
 Repackaging and Easy Installation
 ---------------------------------
@@ -107,8 +126,8 @@ traditional method putting the module folder in the user's `.nuke` folder.
     ├── __init__.py
     └── viewerSync.py
 ```
-
-Consistent Nuke Installation
+<a name='NukeInstall'></a>
+Consistent, Easy Nuke Installation
 ----------------------------
 
 No matter how complicated the module, Thorium modules are added to Nuke with 

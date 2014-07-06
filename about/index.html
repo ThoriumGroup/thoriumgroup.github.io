@@ -154,6 +154,22 @@ indistinguishable from built-in Nuke tools.</strong></p>
 
 <h1>What Makes Thorium Special</h1>
 
+<h2>One Package to Update, Many Modules</h2>
+
+<p>Every time a package Thorium contains gets a new release, Thorium gets a new
+release. Instead of tracking each sub-module, all users of Thorium have to do
+is update Thorium.</p>
+
+<p>Thorium can even let you know if there&#8217;s a new release.</p>
+
+<h2>Thorium Specific Tools</h2>
+
+<p>While Thorium is primarily a combination of other modules, it also contains
+tools and functionality specific to Thorium. For the full list see the
+<a href="docs/thorium.html">Thorium Docs</a>.</p>
+
+<h2>Easy Install</h2>
+
 <p>Once you have Thorium downloaded and in the Python path (see
 <a href="setup/">Thorium Setup</a> for instructions), you can get all of Thorium in less
 than 4 lines of code:</p>
@@ -211,7 +227,7 @@ useful to Pipeline and 2d TDs outside of the scope of the module.</p>
 <p>For modules that add menu items, those menu items are either placed in the
 correct Nuke native menus, or under a new <code>User</code> menu, and appropriate
 sub-menus as needed. The <code>User</code> menu name can even be given a new name when you
-call the <code>run()</code> function (see <code>Nuke Installation</code> below).</p>
+call the <code>run()</code> function (see <a href="#NukeInstall">Nuke Installation</a> below).</p>
 
 <h2>Repackaging and Easy Installation</h2>
 
@@ -239,7 +255,9 @@ traditional method putting the module folder in the user&#8217;s <code>.nuke</co
 </span><span class='line'>    └── viewerSync.py</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<h2>Consistent Nuke Installation</h2>
+<p><a name='NukeInstall'></a></p>
+
+<h2>Consistent, Easy Nuke Installation</h2>
 
 <p>No matter how complicated the module, Thorium modules are added to Nuke with
 just two lines:</p>

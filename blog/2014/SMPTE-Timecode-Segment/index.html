@@ -49,7 +49,37 @@
                     <a href="/">Blog</a>
                 </li>
                 <li >
-                    <a href="/blog/archives">Archives</a>
+                    <a href="/about">About</a>
+                </li>
+                <li >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contributing<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="/contributing">Basics</a>
+                        <a href="/contributing/style.html">Style Standard</a>
+                        <a href="/contributing/docs.html">Code Documentation</a>
+                        <a href="/contributing/tests.html">Testing</a>
+                      </li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="/docs/thorium.html">Thorium</a>
+                          <hr style='margin-top:0.3em; margin-bottom:0.3em'>
+                        <a href="/docs/animatedSnap3D.html">animatedSnap3D</a>
+                        <a href="/docs/cardToTrack.html">cardToTrack</a>
+                        <a href="/docs/iconPanel.html">iconPanel</a>
+                        <a href="/docs/viewerSync.html">viewerSync</a>
+                      </li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="/setup">Setup</a>
+                </li>
+                <li >
+                    <a href="/github">Github Overview</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -128,14 +158,7 @@ subtracted, delta&#8217;d etc.</p>
 
 <p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
 
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
 </span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
@@ -149,13 +172,7 @@ subtracted, delta&#8217;d etc.</p>
 
 <p>The gist comes with a 100% coverage test suite, so if you just call the python file you&#8217;ll run the unittests.</p>
 
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
 </span><span class='line'>..........
 </span><span class='line'>----------------------------------------------------------------------
 </span><span class='line'>Ran 10 tests in 0.001s
@@ -229,7 +246,25 @@ subtracted, delta&#8217;d etc.</p>
   
   <aside class="sidebar col-md-3">
     
-      <section class="panel panel-default">
+      <section id="what-is-thorium" class="panel panel-default clearfix">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      What is Thorium?
+      <span class="pull-right glyphicon glyphicon-info-sign"></span>
+    </h3>
+  </div>
+  <img class="thorium-logo" src="/images/thorium_logo_red.png" alt="Thorium Logo">
+  <div class="panel-body">
+      <strong>
+        Facility grade tools for <a href="http://www.thefoundry.co.uk/nuke/">Nuke</a>, upgraded from popular tools found on <a href="http://www.nukepedia.com/">Nukepedia</a> and beyond.
+      </strong><br><br>
+      <p>
+          Easily install and use many incredible Nuke tools with a simple
+          two step install process.
+      </p>
+      <a class="pull-right btn btn-default" href="/setup">Install Thorium!</a>
+  </div>
+</section><section class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Recent Posts</h3>
   </div>

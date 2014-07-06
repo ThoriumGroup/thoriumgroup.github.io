@@ -4,7 +4,7 @@
   <title><![CDATA[Category: editing | Thorium for Nuke]]></title>
   <link href="http://ThoriumGroup.github.com//blog/categories/editing/atom.xml" rel="self"/>
   <link href="http://ThoriumGroup.github.com//"/>
-  <updated>2014-07-05T00:31:15-07:00</updated>
+  <updated>2014-07-05T21:21:02-07:00</updated>
   <id>http://ThoriumGroup.github.com//</id>
   <author>
     <name><![CDATA[Sean Wallitsch & Thorium Group]]></name>
@@ -36,7 +36,7 @@ subtracted, delta'd etc.</p>
 
 <p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
 
-<p>``` python</p>
+<p>``` python linenos:false</p>
 
 <blockquote><blockquote><blockquote><p>tc = TimeCodeSegment(hour=12, minute=45, second=10, frame=20, duration=300)
 tc.start
@@ -51,7 +51,7 @@ tc.dur
 
 <p>The gist comes with a 100% coverage test suite, so if you just call the python file you'll run the unittests.</p>
 
-<p>```
+<p>``` linenos:false
 python smpte_timecode_segment.py</p>
 
 <h2>..........</h2>

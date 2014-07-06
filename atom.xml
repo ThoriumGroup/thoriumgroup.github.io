@@ -4,7 +4,7 @@
   <title><![CDATA[Thorium for Nuke]]></title>
   <link href="http://ThoriumGroup.github.com//atom.xml" rel="self"/>
   <link href="http://ThoriumGroup.github.com//"/>
-  <updated>2014-07-05T00:31:15-07:00</updated>
+  <updated>2014-07-05T21:21:02-07:00</updated>
   <id>http://ThoriumGroup.github.com//</id>
   <author>
     <name><![CDATA[Sean Wallitsch & Thorium Group]]></name>
@@ -36,14 +36,7 @@ subtracted, delta&#8217;d etc.</p>
 
 <p><code>TimeCodeSegment</code> takes <code>hour</code>, <code>minute</code>, <code>second</code>, and <code>frame</code> args for initializing the starting timecode, and <code>duration</code> (in frames) and <code>fps</code> for calculating an ending timecode and duration. If any of these args (except fps) are not provided during class initializing, they will be randomized. You can actually just call TimeCodeSegment() to get a completely random, 24 frames per second timecode segment.</p>
 
-<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<figure class='code panel panel-default'><div class='highlight'><table><td class='code'><pre><code class='python'><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCodeSegment</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">start</span>
 </span><span class='line'><span class="s">&#39;12:45:10:20&#39;</span>
 </span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="n">tc</span><span class="o">.</span><span class="n">end</span>
@@ -57,13 +50,7 @@ subtracted, delta&#8217;d etc.</p>
 
 <p>The gist comes with a 100% coverage test suite, so if you just call the python file you&#8217;ll run the unittests.</p>
 
-<figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
+<figure class='code panel panel-default'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>python smpte_timecode_segment.py 
 </span><span class='line'>..........
 </span><span class='line'>----------------------------------------------------------------------
 </span><span class='line'>Ran 10 tests in 0.001s

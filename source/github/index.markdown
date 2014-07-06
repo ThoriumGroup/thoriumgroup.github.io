@@ -17,15 +17,15 @@ header.page-header {
 }
 </style>
 
-<div class="jumbotron">
-    <h1>Thorium Group's Projects</h1>
+<div class="jumbotron" style="background: url(../images/thorium-background.png);">
+    <h1 style="color: #66121b;"><img class="no-border" src="{{root_url }}/images/thorium_logo_red_small.png" alt="Thorium Logo" width="120" style="vertical-align: bottom; padding-right: .05em; position: relative; bottom: -0.1em;">orium's Projects</h1>
     <p>
         This is an automated index to GitHub repositories for Thorium's
         various modules.
     </p>
     <p class="clearfix">
-        <a class="btn btn-primary btn-lg pull-right" role="button" href="https://github.com/{{ site.github_user }}/">
-            our GitHub profile »
+        <a class="nuke-btn btn-primary btn-lg pull-right" role="button" href="https://github.com/{{ site.github_user }}/">
+            View on Github »
         </a>
     </p>
 </div>

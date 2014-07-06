@@ -14,11 +14,38 @@
                 <li {% if page.navbar == 'Blog' %}class="active"{% endif %}>
                     <a href="{{ root_url }}/">Blog</a>
                 </li>
-                <li {% if page.navbar == 'Archives' %}class="active"{% endif %}>
-                    <a href="{{ root_url }}/blog/archives">Archives</a>
+                <li {% if page.navbar == 'About' %}class="active"{% endif %}>
+                    <a href="{{ root_url }}/about">About</a>
+                </li>
+                <li {% if page.navbar == 'Contributing' %}class="active"{% endif %}>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contributing<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="{{ root_url }}/contributing">Basics</a>
+                        <a href="{{ root_url }}/contributing/style.html">Style Standard</a>
+                        <a href="{{ root_url }}/contributing/docs.html">Code Documentation</a>
+                        <a href="{{ root_url }}/contributing/tests.html">Testing</a>
+                      </li>
+                    </ul>
+                </li>
+                <li {% if page.navbar == 'Docs' %}class="active"{% endif %}>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="{{ root_url }}/docs/thorium.html">Thorium</a>
+                          <hr style='margin-top:0.3em; margin-bottom:0.3em'>
+                        <a href="{{ root_url }}/docs/animatedSnap3D.html">animatedSnap3D</a>
+                        <a href="{{ root_url }}/docs/cardToTrack.html">cardToTrack</a>
+                        <a href="{{ root_url }}/docs/iconPanel.html">iconPanel</a>
+                        <a href="{{ root_url }}/docs/viewerSync.html">viewerSync</a>
+                      </li>
+                    </ul>
+                </li>
+                <li {% if page.navbar == 'Setup' %}class="active"{% endif %}>
+                    <a href="{{ root_url }}/setup">Setup</a>
                 </li>
                 <li {% if page.navbar == 'Github' %}class="active"{% endif %}>
-                    <a href="{{ root_url }}/github">Github</a>
+                    <a href="{{ root_url }}/github">Github Overview</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

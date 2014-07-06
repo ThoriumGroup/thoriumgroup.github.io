@@ -1,11 +1,11 @@
 ---
 layout: page
-navbar: About
-title: "About Thorium"
+navbar: Contributing
+title: "Contributing to Thorium"
 date: 2014-07-05 10:25
 comments: false
 sharing: true
 footer: true
 ---
 
-General information page about Thorium
+Contribution Docs will go here

@@ -169,9 +169,10 @@
 			
 			// Finish building the link
 			a += ">";
-			if(depth==2) a+= "<b>";
-			a += "- " + base.options.levelText.replace('%', $(element).text()) + '</a>';
-			if(depth==2) a+= "</b>";
+			if(depth == 2) a+= "<b>";
+			if(depth > 2) a+= "• ";
+			a += base.options.levelText.replace('%', $(element).text()) + '</a>';
+			if(depth == 2) a+= "</b>";
 			return a;
 		};
 		

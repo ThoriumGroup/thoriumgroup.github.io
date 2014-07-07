@@ -20,11 +20,14 @@
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Thorium for Nuke" type="application/atom+xml">
 
-  <link href="/assets/bootstrap/dist/css/slate.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+
+  <script src="/javascripts/jquery.tableofcontents.js" type="text/javascript"></script>
+<script src="/javascripts/generate-toc.js" type="text/javascript"></script>
+<link href="/assets/bootstrap/dist/css/slate.css" rel="stylesheet" type="text/css">
 <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 
 
-  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
   
 
 </head>
@@ -152,9 +155,9 @@ haphazard at best, and unit and integration testing is universally non-existent.
 <p><strong>Thorium is the greatest hits of Nukepedia, remastered and upgraded to be
 indistinguishable from built-in Nuke tools.</strong></p>
 
-<h1>What Makes Thorium Special</h1>
+<h2>What Makes Thorium Special</h2>
 
-<h2>One Package to Update, Many Modules</h2>
+<h3>One Package to Update, Many Modules</h3>
 
 <p>Every time a package Thorium contains gets a new release, Thorium gets a new
 release. Instead of tracking each sub-module, all users of Thorium have to do
@@ -162,13 +165,13 @@ is update Thorium.</p>
 
 <p>Thorium can even let you know if there&#8217;s a new release.</p>
 
-<h2>Thorium Specific Tools</h2>
+<h3>Thorium Specific Tools</h3>
 
 <p>While Thorium is primarily a combination of other modules, it also contains
 tools and functionality specific to Thorium. For the full list see the
 <a href="docs/thorium.html">Thorium Docs</a>.</p>
 
-<h2>Easy Install</h2>
+<h3>Easy Install</h3>
 
 <p>Once you have Thorium downloaded and in the Python path (see
 <a href="setup/">Thorium Setup</a> for instructions), you can get all of Thorium in less
@@ -207,14 +210,14 @@ a dictionary turning off specific modules, and reading a config file.</p>
 <p>More configuration options can be found in the
 <a href="docs/thorium.html">Thorium Docs</a>.</p>
 
-<h1>What Goes Into a Thorium Module</h1>
+<h2>What Goes Into a Thorium Module</h2>
 
 <p>While Thorium is primarily distributed as an all-in-one solution, each module
 that Thorium contains can be downloaded and used independently. To that end,
 the first steps that a Thorium upgrade consists of are solely to the module
 itself- Thorium integration happens last.</p>
 
-<h2>Backend Refactoring</h2>
+<h3>Backend Refactoring</h3>
 
 <p>Each module brought into Thorium has its code analyzed, tested and refactored
 to be both more efficient and less buggy. Sometimes this is easy, sometimes
@@ -222,14 +225,14 @@ this involves practically rewriting the entire tool. Along the way certain
 useful bits of code are identified and factored out as functions that might be
 useful to Pipeline and 2d TDs outside of the scope of the module.</p>
 
-<h2>UI Consistency</h2>
+<h3>UI Consistency</h3>
 
 <p>For modules that add menu items, those menu items are either placed in the
 correct Nuke native menus, or under a new <code>User</code> menu, and appropriate
 sub-menus as needed. The <code>User</code> menu name can even be given a new name when you
 call the <code>run()</code> function (see <a href="#NukeInstall">Nuke Installation</a> below).</p>
 
-<h2>Repackaging and Easy Installation</h2>
+<h3>Repackaging and Easy Installation</h3>
 
 <p>Each module brought into Thorium is redone as a full Python package, according
 to the
@@ -257,7 +260,7 @@ traditional method putting the module folder in the user&#8217;s <code>.nuke</co
 
 <p><a name='NukeInstall'></a></p>
 
-<h2>Consistent, Easy Nuke Installation</h2>
+<h3>Consistent, Easy Nuke Installation</h3>
 
 <p>No matter how complicated the module, Thorium modules are added to Nuke with
 just two lines:</p>
@@ -274,7 +277,7 @@ of the UI consistency, all un-categorized menu items are added a <code>User</cod
 and all easily categorized menu items are added to the correct, native Nuke
 menus.</p>
 
-<h2>Documentation</h2>
+<h3>Documentation</h3>
 
 <p>Each module gains full module documentation, both internal and external.</p>
 
@@ -286,7 +289,7 @@ familiar with the Nuke API.</p>
 of the package itself. This external documentation contains installation, usage
 and API reference (for using those useful functions we refactor out).</p>
 
-<h2>PEP-8 Style Standard</h2>
+<h3>PEP-8 Style Standard</h3>
 
 <p>Whatever the style of the module coming in, the style that ends up in Thorium
 is always <a href="http://legacy.python.org/dev/peps/pep-0008/">PEP-8</a>. Adhering to a
@@ -297,7 +300,7 @@ Nuke&#8217;s style standard- if Nuke had one. While many of Nuke&#8217;s functio
 somewhat consistent, that&#8217;s not always true. In the end, it&#8217;s easier to use
 and point to PEP-8.</p>
 
-<h2>Testing</h2>
+<h3>Testing</h3>
 
 <p>Each Thorium module also gains a test suite, filled with both unit tests and
 integration tests. Integration tests require a valid Nuke 8 install and license,
@@ -305,7 +308,7 @@ as those actually call the Nuke API. Testing is vital to writing and upgrading
 code, and often uncovers bugs and regressions that otherwise would have made it
 out to the user in the final product.</p>
 
-<h2>Git</h2>
+<h3>Git</h3>
 
 <p>Nukepedia is an excellent distribution repository, but it&#8217;s not a version
 control system, and it&#8217;s not collaborative. When converting a module as
@@ -468,6 +471,13 @@ on Thorium, the larger and stronger Thorium gets.</p>
 
 
 
+
+  <script type="text/javascript">
+    jQuery(document).ready(function() {
+        // Put a TOC right before the entry content.
+        generateTOC('Table of Contents');
+    });
+  </script>
 
 
   </body>

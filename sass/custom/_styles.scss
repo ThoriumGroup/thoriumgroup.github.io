@@ -76,3 +76,29 @@ $link-color: #efa400;
         background-image: linear-gradient(color-stops(lighten($link-color, 8%), $link-color));
     }
 }
+
+.toc-depth-1 {
+    font-weight: bold;
+}
+
+.toc-depth-2:before {
+  content: "• ";
+}
+
+.toc-depth-2 {
+    font-size: 13px;
+    padding-top: 4px;
+    padding-left: 30px;
+    padding-bottom: 4px;
+}
+
+.toc-depth-3:before {
+  content: "- ";
+}
+
+.toc-depth-3 {
+    font-size: 12px;
+    padding-top: 2px;
+    padding-left: 40px;
+    padding-bottom: 2px;
+}

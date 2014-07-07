@@ -2,15 +2,16 @@
 	TableOfContents Plugin for jQuery
 	
 	Programmed by Doug Neiner
+	Additional Programming by Alexandre Leray, Tiou Lims, and Dennis Stevense (for Digital Deployment)
 	
-	Version: 0.8
+	Version: 0.9
 	
 	Based on code and concept by Janko Jovanovic 
 	  in his article: http://www.jankoatwarpspeed.com/post/2009/08/20/Table-of-contents-using-jQuery.aspx
 	
 	This plugin is offered under the MIT license:
 	
-	(c) 2009 by Doug Neiner, http://dougneiner.com
+	(c) 2009-2014 by Doug Neiner, http://dougneiner.com
 	
 	Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -58,12 +59,6 @@
             if(typeof(scope) == "undefined" || scope == null) scope = document.body;
             base.$scope = $(scope);
 
-			// Find the first heading withing the scope
-			var $first = base.$scope.find(base.tags.join(', ')).filter(':first');
-			
-			// If no headings were found, stop building the TOC
-			if($first.length != 1) return; 
-			
 			// Set the starting depth
 			base.starting_depth = base.options.startLevel;
 
@@ -74,8 +69,15 @@
 			var filtered_tags = base.tags.splice(base.options.startLevel - 1, base.options.depth);
 			
 			// Cache all the headings that match our new filter
-			base.$headings = base.$scope.find(filtered_tags.join(', '));
+			base.$headings = base.findHeadings(base.$scope, filtered_tags.join(', '));
 
+            // Optionally filters the headings we want to feature on the TOC
+            if ($.isFunction(base.options.exclude)) {
+                base.$headings = base.options.exclude(base.$headings, base.$scope);
+            }
+			
+			// headings count less than minCount, stop building the TOC
+	        if(base.$headings.length < base.options.minCount) return;
 			
 			// If topLinks is enabled, set/get an id for the body element
 			if(base.options.topLinks !== false){
@@ -106,6 +108,29 @@
 			
 			return base; // Return this object for memory cleanup
         };
+
+		base.findHeadings = function($element, selector, $headings) {
+			// If no headings are given, default to an empty jQuery set
+			if ($headings === undefined) {
+				$headings = $([]);
+			}
+			
+			// Iterate the children in order
+			$element.children().each(function(i, child) {
+				$child = $(child);
+				
+				if ($child.is(selector)) {
+					// We found a header, add it
+					$headings = $headings.add($child);
+				}
+				else {
+					// Recurse
+					$headings = base.findHeadings($child, selector, $headings);
+				}
+			});
+			
+			return $headings;
+		}
 
 		// Helper function that returns true for both OL and UL lists
 		base.tieredList = function(){
@@ -145,7 +170,7 @@
 		base.addTopLink = function(element){
 			// Get the text for the link (if topLinks === true, it defaults to "Top")
 			var text = (base.options.topLinks === true ? "Top" : base.options.topLinks );
-			var $a = $("<a href='#" + base.topLinkId + "' class='" + base.options.topLinkClass + "' style='font-size: 50%;'></a>").html(text);
+			var $a = $("<a href='#" + base.topLinkId + "' class='" + base.options.topLinkClass + "'></a>").html(text);
 			
 			// Append to the current Header element
 			$(element).append($a);
@@ -165,14 +190,10 @@
 			var a = "<a href='#" + id + "'";
 			
 			// If this isn't a tiered list, we need to add the depth class
-			if(!base.tieredList()) a += " class='" + base.depthClass(depth) + "' style='font-size: " + (14 - 1 * (depth - 2)) + "px; padding-left: " + ((20 * (depth - 2)) + 15) + "px; padding-top: " + (10 - (7 * (depth - 2))) + "px; padding-bottom: " + (10 - (7 * (depth - 2))) + "px;'";
+			if(!base.tieredList()) a += " class='" + base.depthClass(depth) + "'";
 			
 			// Finish building the link
-			a += ">";
-			if(depth == 2) a+= "<b>";
-			if(depth > 2) a+= "• ";
-			a += base.options.levelText.replace('%', $(element).text()) + '</a>';
-			if(depth == 2) a+= "</b>";
+			a += ">" + base.options.levelText.replace('%', $(element).text()) + '</a>';
 			return a;
 		};
 		
@@ -275,7 +296,7 @@
 		// You can change the class by changing this option,
 		// but you must include a % sign where you want the number to go.
 		// Nested lists do not add classes, as you can determine their depth with straight css
-		levelClass: "list-group-item",
+		levelClass: "toc-depth-%",
 		
 		// When each link is formed, you can supply additional html or text to be formatted
 		// with the text of the header. % represents the text of the header
@@ -289,7 +310,7 @@
 		// If topLinks is either true or a text/html value, you can also set the following options:
 		
 		// Class of the link that is added to the headers
-		topLinkClass: "category label label-primary",
+		topLinkClass: "toc-top-link",
 		
 		// Which class should be added to the body element if it does not
 		// already have an id associated with it
@@ -300,8 +321,17 @@
 		// either position = fixed | absolute | relative
 		// Finally, the TOC wrapper must not be a UL or an LI or this setting will
 		// have no effect
-		proportionateSpacing: false
-		
+		proportionateSpacing: false,
+
+        // Optionally filters the headings we want to feature on the table
+        // of content. It may be useful if, for instance, we want to
+        // exclude headings that are within elements such as <article> or
+        // <section>. The value must be a function, whose first argument is the
+        // jquery collection of headings and that return a sub-collection.
+        exclude: function($heading, $scope) { return $heading },
+        
+        // If  headings  less than this value, stop building the TOC
+	    minCount: 1
     };
 	
 

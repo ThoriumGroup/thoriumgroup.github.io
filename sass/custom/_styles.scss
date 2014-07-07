@@ -62,6 +62,19 @@ $link-color: #efa400;
     }
 }
 
+.nuke-jumbo {
+    background: url(../images/thorium-background.png);
+    border-color: #66121b;
+    border-width: 2px;
+}
+
+.thorium-logo-text {
+    vertical-align: bottom;
+    padding-right: .05em; 
+    position: relative;
+    bottom: -0.1em;
+}
+
 .nuke-btn {
     text-shadow: none;
     font-weight: bold;

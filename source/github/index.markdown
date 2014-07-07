@@ -17,8 +17,8 @@ header.page-header {
 }
 </style>
 
-<div class="jumbotron" style="background: url(../images/thorium-background.png); border-color: #66121b;">
-    <h1 style="color: #66121b;"><img class="no-border" src="{{root_url }}/images/thorium_logo_red_small.png" alt="Thorium Logo" width="120" style="vertical-align: bottom; padding-right: .05em; position: relative; bottom: -0.1em;">orium's Projects</h1>
+<div class="jumbotron nuke-jumbo">
+    <h1 style="color: #66121b; text-shadow: -1.5px -1.5px 0px rgba(0, 0, 0, .7);"><img class="no-border thorium-logo-text" src="{{root_url }}/images/thorium_logo_red_small.png" alt="Thorium Logo" width="120">orium's Repos</h1>
     <p>
         This is an automated index to GitHub repositories for Thorium's
         various modules.

@@ -145,7 +145,7 @@
 		base.addTopLink = function(element){
 			// Get the text for the link (if topLinks === true, it defaults to "Top")
 			var text = (base.options.topLinks === true ? "Top" : base.options.topLinks );
-			var $a = $("<a href='#" + base.topLinkId + "' class='" + base.options.topLinkClass + "'></a>").html(text);
+			var $a = $("<a href='#" + base.topLinkId + "' class='" + base.options.topLinkClass + "' style='font-size: 50%;'></a>").html(text);
 			
 			// Append to the current Header element
 			$(element).append($a);
@@ -165,10 +165,13 @@
 			var a = "<a href='#" + id + "'";
 			
 			// If this isn't a tiered list, we need to add the depth class
-			if(!base.tieredList()) a += " class='" + base.depthClass(depth) + "'";
+			if(!base.tieredList()) a += " class='" + base.depthClass(depth) + "' style='font-size: " + (14 - 1 * (depth - 2)) + "px; padding-left: " + ((20 * (depth - 2)) + 15) + "px; padding-top: " + (10 - (7 * (depth - 2))) + "px; padding-bottom: " + (10 - (7 * (depth - 2))) + "px;'";
 			
 			// Finish building the link
-			a += ">" + base.options.levelText.replace('%', $(element).text()) + '</a>';
+			a += ">";
+			if(depth==2) a+= "<b>";
+			a += "- " + base.options.levelText.replace('%', $(element).text()) + '</a>';
+			if(depth==2) a+= "</b>";
 			return a;
 		};
 		
@@ -271,7 +274,7 @@
 		// You can change the class by changing this option,
 		// but you must include a % sign where you want the number to go.
 		// Nested lists do not add classes, as you can determine their depth with straight css
-		levelClass: "toc-depth-%",
+		levelClass: "list-group-item",
 		
 		// When each link is formed, you can supply additional html or text to be formatted
 		// with the text of the header. % represents the text of the header
@@ -285,7 +288,7 @@
 		// If topLinks is either true or a text/html value, you can also set the following options:
 		
 		// Class of the link that is added to the headers
-		topLinkClass: "toc-top-link",
+		topLinkClass: "category label label-primary",
 		
 		// Which class should be added to the body element if it does not
 		// already have an id associated with it

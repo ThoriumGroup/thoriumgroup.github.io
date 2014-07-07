@@ -1,6 +1,6 @@
 function generateTOC(heading) {
   var container = jQuery('<section class="panel panel-default"></section>');
-  var div = jQuery("<ul id='toc'></ul>");
+  var div = jQuery("<div class='list-group'></div>");
   var content = jQuery('.sidebar');
 
   if (heading != undefined && heading != null) {

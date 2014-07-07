@@ -3,6 +3,7 @@ layout: post
 title: "SMPTE Timecode Segment"
 date: 2014-04-19 15:50
 comments: true
+toc: true
 external-url: 
 categories: python editing vfx
 ---

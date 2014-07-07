@@ -126,10 +126,10 @@
 				};
 				
 				// Add the TOC link
-				base.toc += base.formatLink(this, depth, i) + "\n";
+				if (this.className !== 'panel-title') base.toc += base.formatLink(this, depth, i) + "\n";
 				
 				// Add the topLink if enabled
-				if(base.options.topLinks !== false) base.addTopLink(this);
+				if(base.options.topLinks !== false && this.className !== 'panel-title') base.addTopLink(this);
 			});
 			
 			// Close up any nested list

@@ -21,7 +21,7 @@ footer[role=contentinfo] {
 
 /* what is thorium panel */
 
-$nuke-color: #66121b;
+$nuke-color: #7f1119;
 $link-color: #efa400;
 
 #what-is-thorium {
@@ -55,8 +55,7 @@ $link-color: #efa400;
         }
     }
     .thorium-logo {
-        max-width: 100%;
-        width: 389px;
+        max-width: 70%;
         margin: 0 auto 0.6em;
         display: block;
     }
@@ -64,15 +63,14 @@ $link-color: #efa400;
 
 .nuke-jumbo {
     background: url(../images/thorium-background.png);
-    border-color: #66121b;
+    border-color: $nuke-color;
     border-width: 2px;
 }
 
 .thorium-logo-text {
     vertical-align: bottom;
-    padding-right: .05em; 
     position: relative;
-    bottom: -0.1em;
+    bottom: -0.13em;
 }
 
 .nuke-btn {

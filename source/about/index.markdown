@@ -14,7 +14,7 @@ footer: true
 useful open source tools for the Foundry's visual effects compositing software, 
 [Nuke](http://www.thefoundry.co.uk/nuke/).**
 
-Many of the basic tools found inside of Thorium have their roots as user
+Many of the tools found inside of Thorium have their roots as user
 crafted tools on [Nukepedia](http://www.nukepedia.com/). Being driven entirely
 by user created content, Nukepedia hosts an incredible variety of tools for 
 many different uses. *Thorium is not a replacement for Nukepedia.* But user
@@ -25,6 +25,7 @@ haphazard at best, and unit and integration testing is universally non-existent.
 **Thorium is the greatest hits of Nukepedia, remastered and upgraded to be 
 indistinguishable from built-in Nuke tools.**
 
+Thorium can be installed in nuke with two lines of code
 ## What Makes Thorium Special
 
 

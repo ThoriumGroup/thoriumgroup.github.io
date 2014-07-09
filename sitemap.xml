@@ -14,7 +14,11 @@
     </url>
     <url>
         <loc>http://ThoriumGroup.github.com//about/</loc>
-        <lastmod>2014-07-07T19:16:20-07:00</lastmod>
+        <lastmod>2014-07-08T21:17:11-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ThoriumGroup.github.com//about/modules.html</loc>
+        <lastmod>2014-07-08T23:15:58-07:00</lastmod>
     </url>
     <url>
         <loc>http://ThoriumGroup.github.com//assets/bootstrap/docs/about.html</loc>
@@ -79,6 +83,10 @@
     <url>
         <loc>http://ThoriumGroup.github.com//docs/iconPanel.html</loc>
         <lastmod>2014-07-05T12:00:23-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ThoriumGroup.github.com//docs/</loc>
+        <lastmod>2014-07-08T23:14:53-07:00</lastmod>
     </url>
     <url>
         <loc>http://ThoriumGroup.github.com//docs/thorium.html</loc>

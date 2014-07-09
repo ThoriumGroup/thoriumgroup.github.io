@@ -7,7 +7,7 @@ function generateTOC(heading) {
     container.append('<div class="panel-heading"><h3 class="panel-title">' + heading + '</h3></div>');
   }
 
-  div.tableOfContents("#content",{startLevel: 2, levelClass: 'list-group-item toc-depth-%'});
+  div.tableOfContents("#content",{startLevel: 2, levelClass: 'list-group-item toc-depth-%', depth: 2});
   container.append(div);
   content.prepend(container);
 }

@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About Thorium - Thorium for Nuke</title>
+  <title>Thorium Modules - Thorium for Nuke</title>
   <meta name="author" content="Sean Wallitsch & Thorium Group">
 
   
@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ThoriumGroup.github.com//about">
+  <link rel="canonical" href="http://ThoriumGroup.github.com//about/modules.html">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Thorium for Nuke" type="application/atom+xml">
 
@@ -135,133 +135,150 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-07-06T09:38:00-07:00" pubdate data-updated="true">Jul 6<span>th</span>, 2014</time></p>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-07-08T18:38:00-07:00" pubdate data-updated="true">Jul 8<span>th</span>, 2014</time></p>
           
           
             <h1 class="entry-title">
-              About Thorium
+              Thorium Modules
               
             </h1>
           
         </header>
       
       <div class="entry-content">
-        <p><strong>Thorium is a curated, upgraded and standardized collection of popular and
-useful open source tools for the Foundry&#8217;s visual effects compositing software,
-<a href="http://www.thefoundry.co.uk/nuke/">Nuke</a>.</strong></p>
+        <p>While Thorium is primarily distributed as an all-in-one solution, each module
+that Thorium contains can be downloaded and used independently. To that end,
+the first steps that a Thorium upgrade consists of are solely to the module
+itself- Thorium integration happens last.</p>
 
-<p>Many of the tools found inside of Thorium have their roots as user
-crafted tools on <a href="http://www.nukepedia.com/">Nukepedia</a>. Being driven entirely
-by user created content, Nukepedia hosts an incredible variety of tools for
-many different uses. <em>Thorium is not a replacement for Nukepedia.</em> But user
-created tools have their own disadvantages. Methods of installation vary
-wildly, coding isn&#8217;t always efficient, style standards and documentation is
-haphazard at best, and unit/integration testing is universally non-existent.</p>
+<p>The full list of Thorium modules can be found in the
+<a href="/docs">documentation index</a>.</p>
 
-<p>Thorium aims to fix those problems by taking a fine tooth comb to the tools,
-refactoring, upgrading and documenting. <a href="about/modules.html">Read about exactly what happens when a
-module becomes a Thorium module.</a></p>
+<h2>Frontend</h2>
 
-<p><strong>Thorium is the greatest hits of Nukepedia, remastered and upgraded to be
-indistinguishable from built-in Nuke tools.</strong> Thorium aims to provide powerful
-tools in a simple, user friendly package.</p>
+<p>Frontend changes focus on presenting an easy, consistent experience to the
+user, minimizing frustration and decreasing clutter.</p>
 
-<h2>Installation</h2>
+<h3>New Features</h3>
 
-<p>All of Thorium can be integrated into Nuke in just 4 lines of code:</p>
+<p>One of the biggest things that happens to a module is that it&#8217;s feature set is
+examined, and any features that would make a more complete product are added
+to round it out. If a tool tracks a card for translation and rotation, Thorium
+would add scale tracking so that it&#8217;s feature set would be &#8216;complete.&#8217;</p>
 
-<div class="row" style="padding-top: 14px;">
-  <div class="col-md-6">
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>init.py</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
+<p>Often this involves additional panel options, sometimes entire settings panels.</p>
+
+<h3>UI Consistency</h3>
+
+<p>For modules that add menu items, those menu items are either placed in the
+correct Nuke native menus, or under a new <code>User</code> menu, and appropriate
+sub-menus as needed. The <code>User</code> menu name can even be given a new name when you
+call the <code>run()</code> function (see <a href="#NukeInstall">Nuke Installation</a> below).</p>
+
+<h3>Repackaging and Easy Installation</h3>
+
+<p>Each module brought into Thorium is redone as a full Python package, according
+to the
+<a href="python-packaging-user-guide.readthedocs.org/">Python Packaging User Guide</a>.
+Much like the PEP-8 logic above, this lets each module be distributed in a
+consistent package. Because of the repackaging, Thorium modules can be hosted
+on the <a href="https://pypi.python.org/pypi">Python Package Index (PyPI)</a> and
+installed via <a href="https://pypi.python.org/pypi/pip">pip</a>. If pip is not available,
+packages can be installed by downloading the module and running
+<code>python setup.py install</code> from the root package level. Packages can still be
+installed and available just to Nuke, and just to the current user via the
+traditional method putting the module folder in the user&#8217;s <code>.nuke</code> folder.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='code'><pre><code class='plain'><span class='line'>.
+</span><span class='line'>├── LICENSE
+</span><span class='line'>├── MANIFEST.in
+</span><span class='line'>├── README.rst
+</span><span class='line'>├── setup.py
+</span><span class='line'>├── tests
+</span><span class='line'>│   └── test_viewerSync.py
+</span><span class='line'>└── viewerSync
+</span><span class='line'>    ├── __init__.py
+</span><span class='line'>    └── viewerSync.py</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h3>Consistent, Easy Nuke Installation</h3>
+
+<p>No matter how complicated the module, Thorium modules are added to Nuke with
+just two lines:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">thorium</span>
-</span><span class='line'><span class="n">thorium</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">module_name</span>
+</span><span class='line'><span class="n">module_name</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-  </div>
-  <div class="col-md-6">
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>menu.py</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">thorium</span>
-</span><span class='line'><span class="n">thorium</span><span class="o">.</span><span class="n">run_gui</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-  </div>
-</div>
+<p>This will add the correct nodes, menu items, callbacks, etc. to Nuke. Because
+of the UI consistency, all un-categorized menu items are added a <code>User</code> menu,
+and all easily categorized menu items are added to the correct, native Nuke
+menus.</p>
 
+<h3>Documentation</h3>
 
-<p>This integration can be customized thoroughly through simple arguments. Two of
-the most common customizations would be changing the name of the <code>Thorium</code>
-menu, or turning off a Thorium submodule.</p>
+<p>Each module gains full module documentation, both internal (backend) and
+external.</p>
 
-<div class="row" style="padding-top: 14px;">
-  <div class="col-md-6">
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Change Menu Name</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">thorium</span>
-</span><span class='line'><span class="n">thorium</span><span class="o">.</span><span class="n">run_gui</span><span class="p">(</span><span class="n">menu</span><span class="o">=</span><span class="s">&#39;BobVFX&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>Internal documentation consists of full module, function and class docstrings,
+as well as liberal in line commenting to help programmers who might not be
+familiar with the Nuke API.</p>
 
-  </div>
-  <div class="col-md-6">
-<div class='bogus-wrapper'><notextile><figure class='code panel panel-default'><figcaption class='panel-heading'><h3 class='panel-title'>Turn Off animatedSnap3D</h3></figcaption><div class='highlight'><table><td class='gutter'><pre class='line-numbers'><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">thorium</span>
-</span><span class='line'><span class="n">thorium</span><span class="o">.</span><span class="n">run_gui</span><span class="p">({</span><span class="s">&#39;animatedSnap3D&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>External documentation is available here on the Thorium website and as part of
+of the package itself. This external documentation contains installation, usage
+and API reference (for using those useful functions we refactor out).</p>
 
-  </div>
-</div>
+<p>Depending on how complicated a module is, documentation can either be in a
+<code>docs/</code> folder or entirely within the <code>README</code>.</p>
 
+<h2>Backend</h2>
 
-<p>More configuration options can be found in the
-<a href="docs/thorium.html">Thorium Docs</a>.</p>
+<p>Backend changes focus on ease of code maintenance and collaboration. All code
+in Thorium should be well documented, easy to read and easy to customize
+or bug fix.</p>
 
-<h3>Getting Thorium</h3>
+<h3>Refactoring</h3>
 
-<p>Even getting Thorium is easy. If you have <code>pip</code> installed, Thorium can be
-added to your Python install with a simple shell command,
-<code>pip install thorium</code>.</p>
+<p>Each module brought into Thorium has its code analyzed, tested and refactored
+to be both more efficient and less buggy. Sometimes this is easy, sometimes
+this involves practically rewriting the entire tool. Along the way certain
+useful bits of code are identified and factored out as functions that might be
+useful to Pipeline and 2d TDs outside of the scope of the module.</p>
 
-<p>If you don&#8217;t have <code>pip</code>, you can install it by downloading the latest release
-from the <a href="https://github.com/ThoriumGroup/thorium/releases">release page</a>,
-uncompress and enter the directory, then use the shell command
-<code>python setup.py install</code> to install Thorium to your Python install. Or, you
-can just copy the <code>thorium</code> folder from that package into your <code>.nuke</code> folder.</p>
+<h3>PEP-8 Style Standard</h3>
 
-<p>Whatever way you choose, you can get Thorium easily into your environment.</p>
+<p>Whatever the style of the module coming in, the style that ends up in Thorium
+is always <a href="http://legacy.python.org/dev/peps/pep-0008/">PEP-8</a>. Adhering to a
+popular style standard ensures that most people who want to contribute code to
+Thorium are already familiar with the style standard, and that all Thorium
+modules are styled the same. Being  tools for Nuke, it would make sense to use
+Nuke&#8217;s style standard- if Nuke had one. While many of Nuke&#8217;s functions are
+somewhat consistent, that&#8217;s not always true. In the end, it&#8217;s easier to use
+and point to PEP-8.</p>
 
-<h2>Thorium Specific Tools</h2>
+<h3>Testing</h3>
 
-<p>While Thorium is primarily a combination of other modules, it also contains
-tools and functionality specific to Thorium.</p>
+<p>Each Thorium module also gains a test suite, filled with both unit tests and
+integration tests. Integration tests require a valid Nuke 8 install and license,
+as those actually call the Nuke API. Testing is vital to writing and upgrading
+code, and often uncovers bugs and regressions that otherwise would have made it
+out to the user in the final product.</p>
 
-<p>Some highlights of Thorium specific functionality are:</p>
+<h3>Git</h3>
 
-<ul>
-<li>Recursive <code>allNodes()</code> function that actually works.</li>
-<li>Functions to help navigate into and out of group nodes.</li>
-<li>A subclass ready &#8216;Gizmo as Group&#8217; class, streamlining the setup of
-  complicated tools as python objects, rather than gizmos.</li>
-<li>1D and 3D LUT setup functions.</li>
-</ul>
-
-
-<p>For the full list see the <a href="docs/thorium.html">Thorium Docs</a>.</p>
-
-<h2>One Package to Update, Many Modules</h2>
-
-<p>Every time a package Thorium contains gets a new release, Thorium gets a new
-release. Instead of tracking each sub-module, all users of Thorium have to do
-is update Thorium.</p>
-
-<p>Thorium offers a menu item to check for a new release of Thorium. If you
-installed via <code>pip</code>, upgrading is a breeze: <code>pip install thorium --upgrade</code>.</p>
-
-<p>If you installed with <code>python setup.py install</code>, just run
-<code>python setup.py install</code> again in the new version&#8217;s package folder.</p>
-
-<p>Otherwise, just copy &amp; replace the <code>thorium</code> folder.</p>
+<p>Nukepedia is an excellent distribution repository, but it&#8217;s not a version
+control system, and it&#8217;s not collaborative. When converting a module as
+described above, all previous releases are added as commits on a <code>master</code> git
+branch, and uploaded to
+<a href="https://github.com/ThoriumGroup">Thorium&#8217;s GitHub Page</a> for collaboration.
+Thorium Group is an GitHub organization, which let&#8217;s multiple GitHub users
+work on repositories all belonging to the master organization. Even before
+you&#8217;re in the Thorium Group, it&#8217;s easy to fork a repo to your user account,
+make changes and submit a pull request back to Thorium. The more people working
+on Thorium, the larger and stronger Thorium gets.</p>
 
       </div>
       
@@ -281,13 +298,13 @@ installed via <code>pip</code>, upgrading is a breeze: <code>pip install thorium
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-07-06T09:38:00-07:00" pubdate data-updated="true">Jul 6<span>th</span>, 2014</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-07-08T18:38:00-07:00" pubdate data-updated="true">Jul 8<span>th</span>, 2014</time>
             
 
 <span class="glyphicon glyphicon-tags"></span>&nbsp;
 <span class="categories">
   
-    <a class='category label label-primary' href='/blog/categories/thorium/'>Thorium</a> <a class='category label label-primary' href='/blog/categories/modules/'>modules</a>
+    <a class='category label label-primary' href='/blog/categories/modules/'>modules</a>
   
 </span>
 
@@ -296,7 +313,7 @@ installed via <code>pip</code>, upgrading is a breeze: <code>pip install thorium
           
             <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://ThoriumGroup.github.com//about/index.html" data-via="" data-counturl="http://ThoriumGroup.github.com//about/index.html" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://ThoriumGroup.github.com//about/modules.html" data-via="" data-counturl="http://ThoriumGroup.github.com//about/modules.html" >Tweet</a>
   
   
   

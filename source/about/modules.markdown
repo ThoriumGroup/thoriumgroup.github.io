@@ -16,7 +16,7 @@ the first steps that a Thorium upgrade consists of are solely to the module
 itself- Thorium integration happens last.
 
 The full list of Thorium modules can be found in the 
-[documentation index](docs/).
+[documentation index](/docs).
 
 ## Frontend
 

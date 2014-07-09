@@ -20,164 +20,96 @@ by user created content, Nukepedia hosts an incredible variety of tools for
 many different uses. *Thorium is not a replacement for Nukepedia.* But user
 created tools have their own disadvantages. Methods of installation vary
 wildly, coding isn't always efficient, style standards and documentation is
-haphazard at best, and unit and integration testing is universally non-existent.
+haphazard at best, and unit/integration testing is universally non-existent.
+
+Thorium aims to fix those problems by taking a fine tooth comb to the tools,
+refactoring, upgrading and documenting. [Read about exactly what happens when a
+module becomes a Thorium module.](about/modules.html)
 
 **Thorium is the greatest hits of Nukepedia, remastered and upgraded to be 
-indistinguishable from built-in Nuke tools.**
+indistinguishable from built-in Nuke tools.** Thorium aims to provide powerful 
+tools in a simple, user friendly package.
 
-Thorium can be installed in nuke with two lines of code
-## What Makes Thorium Special
+## Installation
 
+All of Thorium can be integrated into Nuke in just 4 lines of code:
 
-### One Package to Update, Many Modules
+<div class="row" style="padding-top: 14px;">
+  <div class="col-md-6">
+``` python init.py
+import thorium
+thorium.run()
+```
+  </div>
+  <div class="col-md-6">
+``` python menu.py
+import thorium
+thorium.run_gui()
+```
+  </div>
+</div>
+
+This integration can be customized thoroughly through simple arguments. Two of
+the most common customizations would be changing the name of the `Thorium`
+menu, or turning off a Thorium submodule.
+
+<div class="row" style="padding-top: 14px;">
+  <div class="col-md-6">
+``` python Change Menu Name
+import thorium
+thorium.run_gui(menu='BobVFX')
+```
+  </div>
+  <div class="col-md-6">
+``` python Turn Off animatedSnap3D
+import thorium
+thorium.run_gui({'animatedSnap3D': False})
+```
+  </div>
+</div>
+
+More configuration options can be found in the 
+[Thorium Docs](docs/thorium.html).
+
+### Getting Thorium
+
+Even getting Thorium is easy. If you have `pip` installed, Thorium can be
+added to your Python install with a simple shell command, 
+`pip install thorium`.
+
+If you don't have `pip`, you can install it by downloading the latest release
+from the [release page](https://github.com/ThoriumGroup/thorium/releases), 
+uncompress and enter the directory, then use the shell command 
+`python setup.py install` to install Thorium to your Python install. Or, you
+can just copy the `thorium` folder from that package into your `.nuke` folder.
+
+Whatever way you choose, you can get Thorium easily into your environment.
+
+## Thorium Specific Tools
+
+While Thorium is primarily a combination of other modules, it also contains 
+tools and functionality specific to Thorium. 
+
+Some highlights of Thorium specific functionality are:
+
+- Recursive `allNodes()` function that actually works.
+- Functions to help navigate into and out of group nodes.
+- A subclass ready 'Gizmo as Group' class, streamlining the setup of 
+    complicated tools as python objects, rather than gizmos.
+- 1D and 3D LUT setup functions.
+
+For the full list see the [Thorium Docs](docs/thorium.html).
+
+## One Package to Update, Many Modules
 
 Every time a package Thorium contains gets a new release, Thorium gets a new
 release. Instead of tracking each sub-module, all users of Thorium have to do
 is update Thorium.
 
-Thorium can even let you know if there's a new release.
+Thorium offers a menu item to check for a new release of Thorium. If you
+installed via `pip`, upgrading is a breeze: `pip install thorium --upgrade`.
 
-### Thorium Specific Tools
+If you installed with `python setup.py install`, just run
+`python setup.py install` again in the new version's package folder.
 
-While Thorium is primarily a combination of other modules, it also contains 
-tools and functionality specific to Thorium. For the full list see the 
-[Thorium Docs](docs/thorium.html).
-
-### Easy Install
-
-Once you have Thorium downloaded and in the Python path (see 
-[Thorium Setup](setup/) for instructions), you can get all of Thorium in less
-than 4 lines of code:
-
-``` python init.py
-import thorium
-thorium.run()
-```
-
-``` python menu.py
-import thorium
-thorium.run_gui()
-```
-
-This installs into Nuke and makes available all modules that Thorium ships 
-with. Each of those modules in itself has had extensive work, as described 
-below.
-
-If you don't want every single one of the modules, Thorium supports inputting
-a dictionary turning off specific modules, and reading a config file.
-
-``` python menu.py
-import thorium
-thorium.run_gui({'animatedSnap3D': False})
-```
-
-More configuration options can be found in the 
-[Thorium Docs](docs/thorium.html).
-
-## What Goes Into a Thorium Module
-
-While Thorium is primarily distributed as an all-in-one solution, each module
-that Thorium contains can be downloaded and used independently. To that end,
-the first steps that a Thorium upgrade consists of are solely to the module
-itself- Thorium integration happens last.
-
-### Backend Refactoring
-
-Each module brought into Thorium has its code analyzed, tested and refactored
-to be both more efficient and less buggy. Sometimes this is easy, sometimes
-this involves practically rewriting the entire tool. Along the way certain
-useful bits of code are identified and factored out as functions that might be 
-useful to Pipeline and 2d TDs outside of the scope of the module.
-
-### UI Consistency
-
-For modules that add menu items, those menu items are either placed in the 
-correct Nuke native menus, or under a new `User` menu, and appropriate 
-sub-menus as needed. The `User` menu name can even be given a new name when you
-call the `run()` function (see [Nuke Installation](#NukeInstall) below).
-
-### Repackaging and Easy Installation
-
-Each module brought into Thorium is redone as a full Python package, according
-to the
-[Python Packaging User Guide](python-packaging-user-guide.readthedocs.org/).
-Much like the PEP-8 logic above, this lets each module be distributed in a 
-consistent package. Because of the repackaging, Thorium modules can be hosted
-on the [Python Package Index (PyPI)](https://pypi.python.org/pypi) and 
-installed via [pip](https://pypi.python.org/pypi/pip). If pip is not available,
-packages can be installed by downloading the module and running
-`python setup.py install` from the root package level. Packages can still be
-installed and available just to Nuke, and just to the current user via the
-traditional method putting the module folder in the user's `.nuke` folder.
-
-``` linenos:false
-.
-├── LICENSE
-├── MANIFEST.in
-├── README.rst
-├── setup.py
-├── tests
-│   └── test_viewerSync.py
-└── viewerSync
-    ├── __init__.py
-    └── viewerSync.py
-```
-<a name='NukeInstall'></a>
-### Consistent, Easy Nuke Installation
-
-No matter how complicated the module, Thorium modules are added to Nuke with 
-just two lines:
-
-``` python
-import module_name
-module_name.run()
-```
-
-This will add the correct nodes, menu items, callbacks, etc. to Nuke. Because 
-of the UI consistency, all un-categorized menu items are added a `User` menu,
-and all easily categorized menu items are added to the correct, native Nuke
-menus.
-
-### Documentation
-
-Each module gains full module documentation, both internal and external.
-
-Internal documentation consists of full module, function and class docstrings,
-as well as liberal in line commenting to help programmers who might not be
-familiar with the Nuke API.
-
-External documentation is available here on the Thorium website and as part of
-of the package itself. This external documentation contains installation, usage
-and API reference (for using those useful functions we refactor out).
-
-### PEP-8 Style Standard
-
-Whatever the style of the module coming in, the style that ends up in Thorium
-is always [PEP-8](http://legacy.python.org/dev/peps/pep-0008/). Adhering to a
-popular style standard ensures that most people who want to contribute code to
-Thorium are already familiar with the style standard, and that all Thorium
-modules are styled the same. Being  tools for Nuke, it would make sense to use
-Nuke's style standard- if Nuke had one. While many of Nuke's functions are
-somewhat consistent, that's not always true. In the end, it's easier to use
-and point to PEP-8.
-
-### Testing
-
-Each Thorium module also gains a test suite, filled with both unit tests and
-integration tests. Integration tests require a valid Nuke 8 install and license,
-as those actually call the Nuke API. Testing is vital to writing and upgrading
-code, and often uncovers bugs and regressions that otherwise would have made it
-out to the user in the final product.
-
-### Git
-
-Nukepedia is an excellent distribution repository, but it's not a version 
-control system, and it's not collaborative. When converting a module as
-described above, all previous releases are added as commits on a `master` git
-branch, and uploaded to 
-[Thorium's GitHub Page](https://github.com/ThoriumGroup) for collaboration.
-Thorium Group is an GitHub organization, which let's multiple GitHub users
-work on repositories all belonging to the master organization. Even before 
-you're in the Thorium Group, it's easy to fork a repo to your user account,
-make changes and submit a pull request back to Thorium. The more people working
-on Thorium, the larger and stronger Thorium gets.
+Otherwise, just copy & replace the `thorium` folder.
